@@ -1,0 +1,113 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="12">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Mã máy</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24"
+          nzErrorTip="Vui lòng nhập mã máy (1-250 kí tự và không kèm ký tự đặc biệt hoặc khoảng trắng)!">
+          <input nz-input placeholder="Nhập mã 1-250 kí tự" [disabled]="isEditItem" [(ngModel)]="dataObject.code"
+            name="code" required pattern="^([a-zA-Z0-9]){1,250}$" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Tên máy</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập tên máy (1-250 kí tự)!">
+          <input nz-input placeholder="Nhập tên 1-250 kí tự" [(ngModel)]="dataObject.name" name="name" required
+            pattern=".{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Mô Tả</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mô tả!">
+          <input nz-input placeholder="Nhập mô tả" [(ngModel)]="dataObject.description" name="description" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+
+  <form nz-form nz-row nz-col nzSpan="24" class="ant-advanced-search-form" #frmAdd3="ngForm">
+    <ng-container>
+      <nz-collapse nz-col nzSpan="24" [nzBordered]="true" class="mt-2 mb-2">
+        <nz-collapse-panel nzHeader=" Danh sách các phụ tùng cần thiết để lắp ráp máy" nzActive=" true"
+          class="ant-bg-antiquewhite">
+          <nz-row [nzGutter]="12">
+
+            <nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Tên phụ tùng</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn tên phụ tùng!">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn tên phụ tùng" [(ngModel)]="dataChoose.id"
+                    autocomplete="off" name="id" required>
+                    <nz-option *ngFor="let item of lstItemSrc" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Số lượng</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng !">
+                  <input class="text-left" nz-input placeholder="Nhập số lượng" [(ngModel)]="dataChoose.quantity"
+                    name="quantity" required currencyMask />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+          </nz-row>
+
+          <div nz-row>
+            <div nz-col [nzSpan]="24" class="text-center">
+              <button nz-button [disabled]="!frmAdd3.form.valid" nzShape="round" nzType="primary" (click)="onAddItem()">
+                <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm sản phẩm vào danh sách bảng lắp ráp
+              </button>
+            </div>
+          </div>
+
+          <nz-table nz-col nzSpan="24" class="mt-2" [nzData]="dataObject.lstItem" [nzShowPagination]="false"
+            [nzFrontPagination]="false" nzTemplateMode>
+            <thead>
+              <tr>
+                <th class="text-center"> STT</th>
+                <th class="text-center"> Tên phụ tùng</th>
+                <th class="text-center"> Số lượng</th>
+                <th class="text-center"> Tùy chọn</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataObject.lstItem ; let i=index ">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-center">{{coreService.getArrayElementId(lstItemSrc, item.id, 'id')}}</td>
+                <td class="text-center">{{item.quantity | number }}</td>
+                <td>
+                  <button nz-button nzType="primary" nzDanger nzShape="circle" nz-tooltip nzTooltipTitle="Xóa"
+                    nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn [XÓA]?" (nzOnConfirm)="onDelete(i)" class="mr-2">
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+  </form>
+
+  <div nz-row>
+    <div nz-col [nzSpan]="24" class="text-center mt-2">
+      <button nzShape="round" nz-button [disabled]="!(frmAdd.form.valid && dataObject.lstItem.length > 0)"
+        nzType="primary" class="mr-3" (click)="onSave()">Lưu</button>
+    </div>
+  </div>
+
+</form>

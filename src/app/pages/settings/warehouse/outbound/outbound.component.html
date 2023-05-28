@@ -1,0 +1,109 @@
+<nz-collapse nzBordered="false" nzOpen class="mb-2">
+  <nz-collapse-panel nzHeader="Tìm kiếm" [nzActive]="true">
+    <nz-row nzGutter="8">
+      <span nz-col nzSpan="8">
+        <input nz-input [(ngModel)]="dataSearch.code" name="code" placeholder="Lọc theo mã" />
+      </span>
+      <span nz-col nzSpan="8">
+        <input nz-input [(ngModel)]="dataSearch.name" name="name" placeholder="Lọc theo tên" />
+      </span>
+      <nz-select nz-col nzSpan="8" nzShowSearch nzAllowClear [(ngModel)]="dataSearch.statusId" name="statusId"
+        nzPlaceHolder="Chọn trạng thái">
+        <nz-option *ngFor="let item of dataFilterStatus" [nzLabel]="item.name" [nzValue]="item.value"></nz-option>
+      </nz-select>
+    </nz-row>
+    <nz-row class="mt-2" nzJustify="center">
+      <nz-col nzSpan="2">
+        <button nz-button nzType="primary" nzShape="round" (click)="searchData(true)">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-row class="mb-2">
+  <button *ngIf="coreService.checkPermission(enumRole.Add.code)" class="mr-2" nz-button nzType="primary" nzShape="round"
+    (click)="clickAdd()">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm mới
+  </button>
+  <button *ngIf="coreService.checkPermission(enumRole.Export_Excel.code)" class="mr-2" nzShape="round" nz-button
+    (click)="clickDownloadTemplateExcel()" nzType="default"><i nz-icon nzType="download" nzTheme="outline"></i>Tải
+    Template Excel</button>
+  <input class="hidden" type="file" id="file" (change)="clickImportExcel($event)" placeholder="Upload file"
+    accept=".csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+  <label *ngIf="coreService.checkPermission(enumRole.Import_Excel.code)" nz-button nzShape="round" for="file"
+    class="lable-custom-file">
+    <i nz-icon nzType="upload"></i> Nhập Excel
+  </label>
+</nz-row>
+<nz-row>
+  <nz-table nz-col nzSpan="24" class="mb-3" #ajaxTable [nzData]="listOfData" [(nzPageSize)]="pageSize"
+    [nzLoading]="loading" [nzShowPagination]="false" nzBordered nzTemplateMode>
+    <thead>
+      <tr>
+        <th class="text-center">Mã đơn xuất</th>
+        <th class="text-center">Ngày xuất kho</th>
+        <th class="text-center"> Trạng thái</th>
+        <th class="text-center"> Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td (click)="clickDetail(data)" class="text-center mw-25 ">{{data.code}}</td>
+        <td (click)="clickDetail(data)" class="text-center mw-25 ">{{data.exportDate | date: 'dd/MM/yyyy'}}</td>
+        <td (click)="clickDetail(data)" class="text-center mw-25 ">
+          <nz-tag class="text-center tag-status" [nzColor]="data.statusColor">
+            {{ coreService.getEnumElementName(enumData.OutBoundStatus, data.status) }}
+          </nz-tag>
+        </td>
+        <td class="text-center text-nowrap">
+          <button
+            *ngIf="data.status != 'DaDuyet' && data.status != 'BiTuChoi' && coreService.checkPermission(enumRole.Confirm.code)"
+            nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn Xác Nhận Xuất Kho ?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="onApproved(data)" nz-tooltip nzTooltipTitle="Xác Nhận Xuất Kho" nz-button nzGhost
+            nzType="primary" nzShape="circle" class="mr-2 mb-1 ant-btn-success">
+            <i nz-icon nzType="check" nzTheme="outline"></i>
+          </button>
+          <button
+            *ngIf="data.status == 'ChoDuyet' && !data.isDeleted && data.status != 'BiTuChoi' && data.status != 'DaDuyet' && coreService.checkPermission(enumRole.Update.code)"
+            (click)="clickEdit(data)" nz-tooltip nzTooltipTitle="Chỉnh sửa Đơn xuất kho" nz-button nzType="primary"
+            nzShape="circle" class="mr-2">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+
+          <button
+            *ngIf="data.status != 'BiTuChoi' && data.status != 'DaDuyet' && coreService.checkPermission(enumRole.Reject.code)"
+            nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn Hủy Phiếu Xuất ?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="onCancel(data)" nz-tooltip nzTooltipTitle="Hủy Phiếu Xuất" nz-button nzType="primary"
+            nzShape="circle" class="mr-2 mb-1 ant-btn-danger">
+            <span nz-icon nzType="close" nzTheme="outline"></span>
+          </button>
+          <!--
+          <button *ngIf="data.isDeleted" nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn hoạt động lại?"
+            nzPopconfirmPlacement="bottom" (nzOnConfirm)="setActiveItem(data)" nz-tooltip
+            nzTooltipTitle="Ngưng hoạt động" nz-button nzDanger nzType="primary" nzShape="circle" class="mr-2">
+            <i nz-icon nzType="stop" nzTheme="outline"></i>
+          </button>
+          <button *ngIf="!data.isDeleted" nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn ngưng hoạt động?"
+            nzPopconfirmPlacement="bottom" (nzOnConfirm)="setActiveItem(data)" nz-tooltip
+            nzTooltipTitle="Đang hoạt động" nz-button nzType="primary" nzShape="circle" class="mr-2">
+            <i nz-icon nzType="play-circle"></i>
+          </button> -->
+          <button *ngIf="coreService.checkPermission(enumRole.Print.code)" nz-tooltip zPopconfirmPlacement="bottom"
+            (click)="clickPrint(data)" nz-button nzShape="circle" nzTooltipTitle="In phiếu"
+            class="mr-2 mb-2 btn-primary">
+            <i nz-icon nzType="printer" nzTheme="outline"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+    (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+    nzShowSizeChanger>
+  </nz-pagination>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Dòng {{ range[0] }} tới {{ range[1] }} trong tổng số {{ total }} dòng
+  </ng-template>
+</nz-row>

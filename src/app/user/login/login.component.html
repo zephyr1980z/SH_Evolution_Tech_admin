@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!--===============================================================================================-->
+</head>
+
+<body>
+  <div class="limiter">
+    <div class="container-login100" style="flex-direction:row; justify-content: space-between; flex-wrap: nowrap;">
+      <div style="width: 70%">
+        <img src="../../../assets/img/1024QT.png" class="height-pc" alt="">
+      </div>
+      <div class="wrap-login100 mr-5">
+        <form class="login100-form validate-form" [formGroup]="loginForm">
+          <span class="login100-form-logo">
+            <!-- <i nz-icon nzType="lock" nzTheme="fill"></i> -->
+            <img [src]="logo" class="logo-dn">
+          </span>
+
+          <span class="login100-form-title p-b-34 p-t-27">
+            Đăng nhập
+          </span>
+
+          <div class="wrap-input100 validate-input" data-validate="Nhập tài khoản">
+            <input class="input100" formControlName="username" type="text" name="username" autocomplete="off"
+              [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+            <span class="focus-input100" data-placeholder="Tài khoản"></span>
+          </div>
+
+          <div class="wrap-input100 validate-input" data-validate="Nhập mật khẩu">
+            <input class="input100" type="password" formControlName="password" name="password" autocomplete="off"
+              [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <span class="focus-input100" data-placeholder="Mật khẩu"></span>
+          </div>
+
+          <div class="container-login100-form-btn">
+            <button class="login100-form-btn" (click)="onSubmit()">
+              Đăng nhập
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

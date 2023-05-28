@@ -1,0 +1,128 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">THÔNG TIN KHÁCH HÀNG {{ data.name | uppercase }}</span>
+  <br />
+</div>
+
+<nz-tabset *ngIf="dataObject" class="mt-4">
+  <nz-tab nzTitle="Thông Tin Chung">
+    <div nz-row nzGutter="6">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã Khách Hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.code }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên Khách Hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.name }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã Số Thuế</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{dataObject.taxNumber}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">SĐT Khách Hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{dataObject.numberPhone}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa Chỉ Khách Hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{dataObject.address}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Email Khách Hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{dataObject.email}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên Ngân Hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{dataObject.bankName}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Số Tài Khoản Ngân Hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.bankAccountNumber}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên Chi Nhánh Ngân Hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.bankBranch }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Người Đại Diện</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{dataObject.represenTative}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">SĐT Người Đại Diện</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{dataObject.represenTativenumberPhone}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Trạng Thái</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+              <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">Không hoạt động</nz-tag>
+              <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+            </nz-form-control>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6" *ngIf="dataObject.description">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mô Tả
+          </nz-form-label>
+          <nz-form-control [nzSm]="23" [nzXs]="24">
+            <b>{{ dataObject.description }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </nz-tab>
+
+</nz-tabset>
+<div nz-row class="mt-3">
+  <div nz-col [nzSpan]="24" class="text-center">
+    <button nz-button nzShape="round" nzType="default" class="mr-3" (click)="closeDialog()">
+      <i nz-icon nzType="lock" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="text-center">
+  <h2 class="text-title text-up">THÔNG TIN LOẠI ĐỐI ỨNG</h2>
+</div>
+
+<nz-tabset *ngIf="dataObject" class="mt-4">
+  <nz-tab nzTitle="Thông Tin Chung">
+    <div nz-row nzGutter="6">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.code }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.name }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Loại</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{coreService.getEnumElementName(enumData.Advance_Reciprocal_Type, dataObject.type)}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Trạng thái</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+              <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">Không hoạt động</nz-tag>
+              <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+            </nz-form-control>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6" *ngIf="dataObject.description">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mô tả
+          </nz-form-label>
+          <nz-form-control [nzSm]="23" [nzXs]="24">
+            <b>{{ dataObject.description }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+  </nz-tab>
+</nz-tabset>
+<div nz-row class="mt-3">
+  <div nz-col [nzSpan]="24" class="text-center">
+    <button nz-button nzShape="round" nzType="default" class="mr-3" (click)="closeDialog()">
+      <i nz-icon nzType="lock" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</div>

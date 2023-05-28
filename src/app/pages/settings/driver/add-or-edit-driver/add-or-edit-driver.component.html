@@ -1,0 +1,134 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="8" *ngIf="!isEditItem">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Tài khoản</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24"
+          nzErrorTip="Vui lòng nhập tài khoản từ 1 đến 50 kí tự và không kèm kí tự đặc biệt khoảng cách">
+          <input nz-input placeholder="Nhập 1-50 kí tự" [(ngModel)]="dataObject.username" [disabled]="isEditItem"
+            name="username" required pattern="^([a-z0-9]){1,50}$" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8" *ngIf="!isEditItem">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Mật khẩu</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mật khẩu ít nhất 4 kí tự!">
+          <input type="password" nz-input placeholder="Nhập ít nhất 4 kí tự" [(ngModel)]="dataObject.password"
+            name="password" required pattern=".{4,}" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col [nzSpan]="8" *ngIf="!isEditItem">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Xác nhận mật khẩu</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập xác nhận mật khẩu ít nhất 4 kí tự!">
+          <input type="password" nz-input placeholder="Nhập lại mật khẩu" [(ngModel)]="dataObject.confimPassword"
+            name="confimPassword" required pattern=".{4,}" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="12">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Tên tài xế</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập tên tài xế (1-250 kí tự)!">
+          <input nz-input [disabled]="isEditItem" placeholder="Nhập tên tài xế (1-250 kí tự)"
+            [(ngModel)]="dataObject.name" name="name" required pattern=".{1,250}" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left"> Email </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập email (tối đa 65 ký tự)!">
+          <input nz-input placeholder="Nhập email (tối đa 65 ký tự)" name="email" id="email"
+            [(ngModel)]="dataObject.email" pattern="^[A-Za-z0-9_.]{3,32}@([a-zA-Z0-9]{2,12})(.[a-zA-Z]{2,12})+$"
+            autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="12">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Số điện thoại </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số điện thoại (10-16 số)!">
+          <input nz-input placeholder="Nhập số điện thoại (10-16 số)" [(ngModel)]="dataObject.numberPhone" id="phone"
+            name="phone" pattern=".{10,16}" numbersOnlyautocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="12">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ngày sinh </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-date-picker [(ngModel)]="dataObject.dob" nzPlaceHolder="Chọn ngày sinh Tài xế" name="dob"
+            nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Số CMND / CCCD </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số CMND / CCCD (9-16 ký tự)!">
+          <input nz-input placeholder="Nhập số CMND / CCCD" name="cardNumber" id="cardNumber"
+            [(ngModel)]="dataObject.cardNumber" pattern=".{9,16}" numbersOnly autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa chỉ </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập địa chỉ (tối đa 250 ký tự)!">
+          <input nz-input placeholder="Nhập địa chỉ (tối đa 250 ký tự)" [(ngModel)]="dataObject.address" name="address"
+            pattern=".{0,250}" autocomplete="off" [disabled]="isEditItem" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row nzGutter=" 6">
+    <nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Biển số đầu kéo </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.vehicleId" name="vehicleId"
+            nzPlaceHolder="Chọn biển số đầu kéo">
+            <nz-option *ngFor="let item of dataVehicle" [nzLabel]="item.regNo" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Biển số rơ moóc</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.romoocId" name="romoocId"
+            nzPlaceHolder="Chọn biển số rơ moóc">
+            <nz-option *ngFor="let item of dataRomooc" [nzLabel]="item.regNo" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" nz-button nzType="primary" (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

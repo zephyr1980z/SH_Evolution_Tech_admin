@@ -1,0 +1,19 @@
+<nz-tabset>
+
+  <ng-template #temp1>
+    <span nz-icon nzType="container" nzTheme="outline"></span>
+    <b class="mr-2">Danh Sách Đầu Kéo</b>
+  </ng-template>
+  <nz-tab [nzTitle]="temp1" *ngIf="coreService.checkPermission(SettingVehicle?.View?.code)">
+    <app-vehicle></app-vehicle>
+  </nz-tab>
+
+  <!-- <ng-template #temp2>
+    <span nz-icon nzType="history" nzTheme="outline"></span>
+    <b class="mr-2">Theo Dõi Dầu Của Đầu Kéo</b>
+  </ng-template>
+  <nz-tab [nzTitle]="temp2" *ngIf="coreService.checkPermission(SettingVehicle?.View?.code)">
+    <app-oil-monitoring></app-oil-monitoring>
+  </nz-tab> -->
+
+</nz-tabset>

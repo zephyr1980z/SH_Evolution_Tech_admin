@@ -1,0 +1,92 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="6" class="mt-4">
+
+    <div nz-col [nzSpan]="6">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>
+          Mã Nhà Xe
+        </nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24" nzErrorTip="Vui lòng nhập mã khách hàng (1-50 kí tự)!">
+          <input nz-input placeholder="Nhập mã khách hàng" [(ngModel)]="dataObject.code" name="code" required
+            pattern=".{1,50}" required [disabled]="isEditItem" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>
+          Tên Nhà Xe
+        </nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24" nzErrorTip="Vui lòng nhập họ & tên (1-50 kí tự)!">
+          <input nz-input placeholder="Nhập họ và tên khách hàng" [(ngModel)]="dataObject.name" name="name" required
+            pattern=".{1,50}" autocomplete="off" required />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Email
+        </nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24">
+          <input nz-input type="email" placeholder="Nhập email hợp lệ" [(ngModel)]="dataObject.email" name="email"
+            pattern="^[A-Za-z0-9_.]{3,32}@([a-zA-Z0-9]{2,12})(.[a-zA-Z]{2,12})+$" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">SĐT</nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24">
+          <input nz-input placeholder="Nhập số điện thoại" [(ngModel)]="dataObject.numberPhone" name="numberPhone"
+            pattern=".{1,10}" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Địa Chỉ</nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24" nzErrorTip="Vui lòng nhập địa chỉ">
+          <input type="address" nz-input placeholder="Nhập địa chỉ" [(ngModel)]="dataObject.address" name="address"
+            required autocomplete="off" required />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên Ngân Hàng</nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24">
+          <input type="bankName" nz-input placeholder="Nhập tên ngân hàng" [(ngModel)]="dataObject.bankName"
+            name="bankName" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Số Tài Khoản Ngân Hàng</nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24">
+          <input type="bankAccountNumber" nz-input placeholder="Nhập số tài khoản ngân hàng"
+            [(ngModel)]="dataObject.bankAccountNumber" name="bankName" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Chi Nhánh Ngân Hàng</nz-form-label>
+        <nz-form-control [nzSm]="20" [nzXs]="24">
+          <input type="bankBranch" nz-input placeholder="Nhập chi nhánh ngân hàng" [(ngModel)]="dataObject.bankBranch"
+            name="bankBranch" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row class="mt-3">
+    <div nz-col [nzSpan]="24" class="text-center">
+      <button nz-button [disabled]="!frmAdd.form.valid" nzShape="round" nzType="primary" class="mr-3"
+        (click)="onSave()">Lưu</button>
+    </div>
+  </div>
+</form>

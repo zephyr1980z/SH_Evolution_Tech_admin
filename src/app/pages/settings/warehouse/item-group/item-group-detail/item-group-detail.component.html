@@ -1,0 +1,85 @@
+<div class="text-center">
+  <h2 class="text-title text-up">{{modelTitle}}</h2>
+</div>
+<nz-tabset *ngIf="dataObject" class="mt-4">
+  <nz-tab nzTitle="Thông Tin Chung">
+    <div nz-row nzGutter="6">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên nhóm phụ tùng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.name }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã nhóm phụ tùng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.code }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6" *ngIf="dataObject.description">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mô tả
+          </nz-form-label>
+          <nz-form-control [nzSm]="23" [nzXs]="24">
+            <b>{{ dataObject.description }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Trạng thái</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+              <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">Không hoạt động</nz-tag>
+              <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+            </nz-form-control>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+  </nz-tab>
+  <nz-tab nzTitle="Danh sách phụ tùng">
+    <nz-table nz-col nzSpan="24" class="mb-3" #ajaxTable [nzData]="listOfData" [(nzPageSize)]="pageSize"
+      [nzLoading]="loading" [nzShowPagination]="false" nzBordered nzTemplateMode>
+      <thead>
+        <tr>
+          <th class="text-center"> Mã phụ tùng</th>
+          <th class="text-center"> Tên phụ tùng</th>
+          <th class="text-center"> Số lượng tổng</th>
+          <th class="text-center"> Đơn vị</th>
+          <th class="text-center"> Quy đổi</th>
+          <th class="text-center"> Đơn vị cơ sở</th>
+          <th class="text-center"> Giá nhập trung bình</th>
+          <th class="text-center"> Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable.data">
+          <td>{{ data.code }}</td>
+          <td class="mw-25">{{ data.name }}</td>
+          <td class="mw-25 text-right">{{ data.quantity | number: '1.0-2'}}</td>
+          <td class="mw-25">{{ data.unitName }}</td>
+          <td class="mw-25 text-right">{{ data.unitToBaseUnitQuantity | number }}</td>
+          <td class="mw-25">{{ data.baseUnitName }}</td>
+          <td class="mw-25 text-right">{{ data.importPrice | number: '1.0-2'}}</td>
+          <td class="mw-25 text-center">
+            <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">Không hoạt động</nz-tag>
+            <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-tab>
+</nz-tabset>
+<div nz-row class="mt-3">
+  <div nz-col [nzSpan]="24" class="text-center">
+    <button nz-button nzShape="round" nzType="default" class="mr-3" (click)="closeDialog()">
+      <i nz-icon nzType="lock" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</div>

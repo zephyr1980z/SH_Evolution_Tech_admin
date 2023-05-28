@@ -1,0 +1,272 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="12">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Mã đơn phiếu xuất</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24"
+          nzErrorTip="Vui lòng nhập mã đơn (1-250 kí tự và không kèm ký tự đặc biệt hoặc khoảng trắng)!">
+          <input nz-input placeholder="Nhập mã 1-250 kí tự" [disabled]="isEditItem" [(ngModel)]="dataObject.code"
+            name="code" required pattern="^([a-zA-Z0-9]){1,250}$" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="12">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Mô tả phiếu xuất</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mô tả!">
+          <input nz-input placeholder="Nhập mô tả" [(ngModel)]="dataObject.description" name="description" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <form nz-form nz-row nz-col nzSpan="24" class="ant-advanced-search-form" #frmAddInboundDetail="ngForm">
+    <ng-container>
+      <nz-collapse nz-col nzSpan="24" [nzBordered]="true" class="mt-2">
+        <nz-collapse-panel nzHeader=" Danh sách sản phẩm" nzActive=" true" class="ant-bg-antiquewhite">
+          <div nz-row [nzGutter]="12">
+            <nz-col nzSpan="8">
+              <nz-form-item nzFlex>
+                <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Tên sản phẩm</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn tên sản phẩm!">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn tên sản phẩm" [(ngModel)]="dataChoose.itemId"
+                    autocomplete="off" name="itemId" required (ngModelChange)="onChangeItem($event)">
+                    <nz-option *ngFor="let item of lstItem" [nzLabel]="item.name + ' (' + item.code + ')'"
+                      [nzValue]="item.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="8">
+              <nz-form-item nzFlex>
+                <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Số lượng tổng sản phẩm
+                </nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                  <input nz-input placeholder="Số lượng tổng sản phẩm" [(ngModel)]="dataChoose.itemQuantity"
+                    name="itemQuantity" disabled="true" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="8">
+              <nz-form-item nzFlex>
+                <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Đơn vị cơ sở</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Đơn vị cơ sở!">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn đơn vị cơ sở"
+                    [(ngModel)]="dataChoose.baseUnitId" name="baseUnitId" required autocomplete="off" nzDisabled>
+                    <nz-option *ngFor="let item of lstItemSrc" [nzLabel]="item.baseUnitName"
+                      [nzValue]="item.baseUnitId">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Số lượng xuất</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng xuất">
+                  <input nz-input [(ngModel)]="dataChoose.quantity" name="quantity" placeholder="Nhập số lượng xuất"
+                    autocomplete="off" required pattern="^([.0-9]){1,250}$" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <nz-col nzSpan="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Đơn giá (Dựa theo giá nhập trung bình)
+                </nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                  <input nz-input [(ngModel)]="dataChoose.price" name="price" autocomplete="off" readonly="readonly"
+                    pattern="^([.0-9]){1,250}$" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="8">
+              <nz-form-item nzFlex>
+                <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Ngày sản xuất
+                </nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                  <span>{{dataChoose.manufactureDate | date: 'dd/MM/yyy' }}</span>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <nz-col nzSpan="8">
+              <nz-form-item nzFlex>
+                <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Hạn sử dụng
+                </nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                  <span>{{dataChoose.expiryDate | date: 'dd/MM/yyy' }}</span>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="24">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mô tả</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mô tả">
+                  <textarea nz-input placeholder="Nhập mô tả" [(ngModel)]="dataChoose.description" name="description"
+                    rows="5" auto></textarea>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+          </div>
+
+          <div nz-row>
+            <div nz-col [nzSpan]="24" class="text-center">
+              <button nz-button [disabled]="!frmAddInboundDetail.form.valid" nzShape="round" nzType="primary"
+                (click)="onAddItem()">
+                <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm sản phẩm vào danh sách xuất kho
+              </button>
+            </div>
+          </div>
+
+          <nz-table nz-col nzSpan="24" class="mt-2" [nzData]="dataObject?.lstItem" [nzShowPagination]="false"
+            [nzFrontPagination]="false" nzTemplateMode>
+            <thead>
+              <tr>
+                <th class="text-center"> STT</th>
+                <th class="text-center"> Tên sản phẩm</th>
+                <th class="text-center"> Số lượng tổng</th>
+                <th class="text-center"> Đơn vị cơ sở</th>
+                <th class="text-center"> Mã lô sản phẩm</th>
+                <th class="text-center"> Số lượng xuất</th>
+                <th class="text-center"> Đơn giá</th>
+                <th class="text-center"> Mô tả</th>
+                <th class="text-center"> Tùy chọn</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataObject.lstItem; let i=index ">
+                <td class="text-center">{{i + 1}}</td>
+                <td>{{item.itemName}}</td>
+                <td class="text-right">{{item.itemQuantity | number: '1.0-2'}}</td>
+                <td>{{item.baseUnitName}}</td>
+                <td>{{item.itemDetailCode}}</td>
+                <td class="text-right">{{item.quantity | number: '1.0-2'}}</td>
+                <td class="text-right">{{item.price | number: '1.0-2'}}</td>
+                <td>{{item.description}}</td>
+                <td>
+                  <button nz-button nzType="primary" nzDanger nzShape="circle" nz-tooltip nzTooltipTitle="Xóa"
+                    nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn [XÓA]?" (nzOnConfirm)="onDelete(i)" class="mr-2">
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                  </button>
+                  <button *ngIf="dataObject?.status == 'ChoDuyet' && !data?.isDeleted && isEditItem"
+                    (click)="clickEditOutboundDetail(item)" nz-tooltip nzTooltipTitle="Chỉnh sửa Đơn nhập kho" nz-button
+                    nzType="primary" nzShape="circle" class="mr-2">
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+  </form>
+
+  <div nz-row>
+    <div nz-col [nzSpan]="24" class="text-center mt-2">
+      <button nzShape="round" nz-button [disabled]="!(frmAdd.form.valid && dataObject?.lstItem?.length > 0)"
+        nzType="primary" class="mr-3" (click)="onSave()">Lưu</button>
+    </div>
+  </div>
+</form>
+
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Chỉnh sửa lô nhập kho" (nzOnCancel)="onCancelEditOutbound()"
+  nzWidth="800px">
+  <ng-container *nzModalContent>
+    <div nz-row [nzGutter]="12">
+      <nz-col nzSpan="8">
+        <nz-form-item nzFlex>
+          <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Tên sản phẩm</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn tên sản phẩm!">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn tên sản phẩm" [(ngModel)]="outboundDetail.itemId"
+              autocomplete="off" name="itemId" required (ngModelChange)="onChangeItem($event)">
+              <nz-option *ngFor="let item of lstItem" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="8">
+        <nz-form-item nzFlex>
+          <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Số lượng tổng sản phẩm
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <input nz-input placeholder="Số lượng tổng sản phẩm" [(ngModel)]="outboundDetail.itemQuantity"
+              name="itemQuantity" disabled="true" />
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Đơn vị
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <input nz-input [(ngModel)]="outboundDetail.baseUnitName" name="inboundDetail.baseUnitName"
+              autocomplete="off" readonly="readonly" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <nz-col nzSpan="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Số lượng xuất</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng xuất">
+            <input nz-input [(ngModel)]="outboundDetail.quantity" name="quantity" placeholder="Nhập số lượng xuất"
+              autocomplete="off" required pattern="^([.0-9]){1,250}$" />
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+
+      <nz-col nzSpan="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Đơn giá (Dựa theo giá nhập trung bình)
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <input nz-input [(ngModel)]="outboundDetail.price" name="price" autocomplete="off" readonly="readonly"
+              pattern="^([.0-9]){1,250}$" />
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="8">
+        <nz-form-item nzFlex>
+          <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Ngày sản xuất
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <span>{{outboundDetail.manufactureDate | date: 'dd/MM/yyy' }}</span>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="8">
+        <nz-form-item nzFlex>
+          <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Hạn sử dụng
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <span>{{outboundDetail.expiryDate | date: 'dd/MM/yyy' }}</span>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="24">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mô tả</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mô tả">
+            <textarea nz-input placeholder="Nhập mô tả" [(ngModel)]="outboundDetail.description" name="description"
+              rows="5" auto></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </div>
+  </ng-container>
+  <div *nzModalFooter>
+
+    <button nzShape="round" nzType="primary" (click)="onSaveOutboundDetail(outboundDetail)" nz-button>
+      <span nz-icon nzType="save" nzTheme="outline"></span> Lưu lô nhập
+    </button>
+    <button nzShape="round" (click)="onCancelEditOutbound()" nz-button>
+      <i nz-icon nzType="close" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</nz-modal>

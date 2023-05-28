@@ -1,0 +1,121 @@
+<div class="text-center">
+  <h2 class="text-title text-up">{{modelTitle}}</h2>
+</div>
+<nz-tabset *ngIf="dataObject" class="mt-4">
+  <nz-tab nzTitle="Thông Tin Chung">
+    <div nz-row nzGutter="6">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã đơn nhập kho</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.code }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên đơn nhập kho</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.name }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Nhà cung cấp</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.supplierName }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Trạng thái đơn nhập</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+              <nz-tag [nzColor]="coreService.getEnumElementColor(enumData.Inbound, data.status)">
+                {{coreService.getEnumElementName(enumData.Inbound, data.status)}}</nz-tag>
+            </nz-form-control>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Trạng thái hoạt động</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+              <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">Không hoạt động</nz-tag>
+              <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+            </nz-form-control>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ghi chú</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <textarea [readOnly]="true" nz-input [(ngModel)]="dataObject.description" rows="5" auto></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <nz-row nzJustify="center">
+      <h2>Danh sách sản phẩm trong đơn xuất kho</h2>
+      <nz-table nz-col nzSpan="24" class="mb-3" [nzData]="['']" [(nzPageSize)]="pageSize" [nzLoading]="false"
+        [nzShowPagination]="false" nzBordered nzTemplateMode [nzScroll]="{ x: '3000px', y: null }"
+        nzTableLayout="fixed">
+        <thead>
+          <tr>
+            <th nzWidth="200px" nzLeft> Mã phụ tùng</th>
+            <th class="text-center"> Tên phụ tùng</th>
+            <th class="text-center"> Đơn vị</th>
+            <th class="text-center"> Số lượng nhập dự kiến</th>
+            <th class="text-center"> Số lượng nhập thực</th>
+            <th class="text-center"> Giá nhập</th>
+            <th class="text-center"> Thành tiền</th>
+            <th class="text-center"> Thành tiền dự kiến</th>
+            <th class="text-center"> Ngày nhập</th>
+            <th class="text-center"> Ngày sản xuất</th>
+            <th class="text-center"> Ngày hết hạn</th>
+            <th nzWidth="200px" nzRight>Trạng thái lô nhập</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of dataObject.lstItem">
+            <td nzWidth="200px" nzLeft class="text-center" class="text-center">{{data.itemCode}}</td>
+            <td class="mw-25 text-center">{{data.itemName}}</td>
+            <td class="mw-25 text-center">{{data.baseUnitName}}</td>
+            <td class="mw-25 text-center">{{data.estimatedQuantity | number: '1.0-2'}}</td>
+            <td class="mw-25 text-center">{{data.quantity | number: '1.0-2'}}</td>
+            <td class="mw-25 text-center">{{data.itemImportPrice | number: '1.0-2'}}</td>
+            <td class="mw-25 text-center">{{data.itemImportPrice * data.quantity| number: '1.0-2'}}</td>
+            <td class="mw-25 text-center">{{data?.itemImportPrice * data?.estimatedQuantity| number: '1.0-2'}}</td>
+            <td class="mw-25 text-center">{{data.importDate | date: 'dd/MM/yyyy '}}</td>
+            <td class="mw-25 text-center">{{data.manufactureDate | date: 'dd/MM/yyyy '}}</td>
+            <td class="mw-25 text-center">{{data.expiryDate | date: 'dd/MM/yyyy '}}</td>
+            <td nzWidth="200px" nzRight class="text-center">
+              <nz-tag [nzColor]="coreService.getEnumElementColor(enumData.Inbound_Detail, data.status)">
+                {{coreService.getEnumElementName(enumData.Inbound_Detail, data.status)}}</nz-tag>
+              <button [disabled]="isQualified" (click)="onWarningApproveIbDetail(data)"
+                *ngIf="data.status == 'MoiTao' && !data.isDeleted " nz-tooltip nzTooltipTitle="Xác nhập nhập lô"
+                nz-button nzType="primary" nzShape="circle" class="mr-2" nzGhost nz-popconfirm
+                nzPopconfirmTitle="Bạn có chắc muốn Xác Nhận Nhập Lô Này?" nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="onApproveInboundDetail(data)">
+                <span nz-icon nzType="check" nzTheme="outline"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-row>
+  </nz-tab>
+</nz-tabset>
+<div nz-row class="mt-3">
+  <div nz-col [nzSpan]="24" class="text-center">
+    <button nz-button nzShape="round" nzType="default" class="mr-3" (click)="closeDialog()">
+      <i nz-icon nzType="lock" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</div>

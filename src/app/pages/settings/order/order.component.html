@@ -1,0 +1,208 @@
+<nz-collapse nzBordered="false" nzOpen class="mt-2">
+  <nz-collapse-panel nzHeader="Tìm kiếm" [nzActive]="false" [nzDisabled]="false">
+    <nz-row nzGutter="24" nzFlex>
+      <nz-col class="mt-3" nzSpan="6">
+        <input nz-input [(ngModel)]="dataSearch.code" name="code" placeholder="Lọc mã" />
+      </nz-col>
+      <nz-col class="mt-3" nzSpan="6">
+        <input nz-input [(ngModel)]="dataSearch.bookingNumber" name="bookingNumber" placeholder="Lọc Số Booking" />
+      </nz-col>
+      <nz-col class="mt-3" nzSpan="6">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.status" name="status"
+          nzPlaceHolder="Trạng thái đơn hàng">
+          <nz-option *ngFor="let item of lstOrderStatus" [nzLabel]="item.name" [nzValue]="item.code">
+          </nz-option>
+        </nz-select>
+      </nz-col>
+      <nz-col class="mt-3" nzSpan="6">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.isDeleted" name="isDeleted"
+          nzPlaceHolder="Trạng thái hoạt động">
+          <nz-option *ngFor="let item of dataFilterStatus" [nzLabel]="item.name" [nzValue]="item.value">
+          </nz-option>
+        </nz-select>
+      </nz-col>
+      <nz-col class="mt-3" nzSpan="6">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.customerId" name="customerId"
+          nzPlaceHolder="Khách hàng">
+          <nz-option *ngFor="let item of lstOfCustomer" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-col>
+      <nz-col class="mt-3" nzSpan="6">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.serviceType" name="serviceType"
+          nzPlaceHolder="Dịch vụ">
+          <nz-option *ngFor="let item of lstServiceType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+        </nz-select>
+      </nz-col>
+
+      <nz-col class="mt-3" nzSpan="6">
+        <nz-range-picker [nzShowTime]="false" [nzPlaceHolder]="['Ngày lấy hàng từ','đến Ngày lấy hàng']"
+          [nzFormat]="'dd/MM/yyyy'" [(ngModel)]="dataSearch.fromETD" name="fromETD">
+        </nz-range-picker>
+      </nz-col>
+
+      <nz-col class="mt-3" nzSpan="6">
+        <nz-range-picker [nzShowTime]="false" [nzPlaceHolder]="['Ngày trả hàng từ','đến Ngày trả hàng']"
+          [nzFormat]="'dd/MM/yyyy'" [(ngModel)]="dataSearch.toETD" name="toETD">
+        </nz-range-picker>
+      </nz-col>
+
+      <!-- Người tạo order
+      hãng tàu
+      điểm lấy hàng
+      điểm trả hàng -->
+      <nz-col nzSpan="6" class="mt-3">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.createdBy" name="createdBy"
+          nzPlaceHolder="Người tạo order">
+          <nz-option *ngFor="let item of lstEmp" [nzLabel]="item.name" [nzValue]="item.userId"></nz-option>
+        </nz-select>
+      </nz-col>
+      <nz-col nzSpan="6" class="mt-3">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.shipId" name="shipId" nzPlaceHolder="Hãng tàu">
+          <nz-option *ngFor="let item of lstShip " [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-col>
+      <nz-col nzSpan="6" class="mt-3">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.fromLocationId" name="fromLocationId"
+          nzPlaceHolder="Tìm theo điểm lấy hàng">
+          <nz-option *ngFor="let item of lstLocation " [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-col>
+
+      <nz-col nzSpan="6" class="mt-3">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.toLocationId" name="toLocationId"
+          nzPlaceHolder="Tìm theo điểm giao hàng">
+          <nz-option *ngFor="let item of lstLocation " [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-col>
+    </nz-row>
+    <nz-row nzGutter="24" align="center" class="mt-2">
+      <nz-col nzSpan="24">
+        <button nz-button nzType="primary" nzShape="round" (click)="searchData(true)">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm Kiếm
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-row class="mb-3 mt-3">
+  <button nzShape="round" nz-button nzType="primary" nzShape="round" (click)="clickAdd()" class="mr-2"
+    *ngIf="coreService.checkPermission(enumRole.Add.code)">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm mới
+  </button>
+  <button nz-button nzType="primary" class="mr-3" (click)="onDownload()" nzShape="round"
+    *ngIf="coreService.checkPermission(enumRole.Export_Excel.code)">
+    <i nz-icon nzType="download" nzTheme="outline"></i> Tải Excel
+  </button>
+  <!-- <input class="hidden" type="file" id="file" (change)="onImportExcel($event)" placeholder="Upload file"
+    accept=".csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+  <label nz-button nzSpan="3" for="file" class="lable-custom-file mr-2"
+    *ngIf="coreService.checkPermission(enumRole.Import_Excel.code)">
+    <i nz-icon nzType="upload" nzTheme="outline"></i> Nhập Excel
+  </label> -->
+  <!-- <button nzShape="round" nz-button (click)="onDownloadTemplate()" nzType="default"><i nz-icon nzType="download"
+      nzTheme="outline"></i>Tải Template Excel
+  </button>
+  <button nz-button nzType="primary" class="mr-3" (click)="onDownload()" nzShape="round"
+    *ngIf="coreService.checkPermission(enumRole.Export_Excel.code)">
+    <i nz-icon nzType="download" nzTheme="outline"></i> Tải Excel
+  </button>
+</nz-row> -->
+
+  <div nz-row class="mt-3">
+    <nz-table nz-col nzSpan="24" class="mb-3" #ajaxTable [nzData]="listOfData" [(nzPageSize)]="pageSize"
+      [nzLoading]="loading" [nzShowPagination]="false" nzBordered nzTemplateMode
+      [nzScroll]="{ x: '1000px', y: '780px' }">
+      <thead>
+        <tr>
+          <!--     <th class="text-center" nzWidth="180px">Mã đơn hàng</th>
+        <th class="text-center" nzWidth="240px">Tên khách hàng</th>
+        <th class="text-center" nzWidth="180px">Tên phòng ban</th>
+        <th class="text-center" nzWidth="180px">Số booking</th> -->
+
+          <th class="text-center">Mã đơn hàng</th>
+          <th class="text-center">Khách hàng</th>
+          <th class="text-center">Ngày lấy hàng</th>
+          <th class="text-center">Ngày trả hàng</th>
+          <th class="text-center" nzWidth="50px">SL</th>
+          <th class="text-center" nzWidth="70px">LC</th>
+          <th class="text-center">Hãng tàu</th>
+          <th class="text-center">Booking</th>
+          <th class="text-center">Ghép</th>
+          <th class="text-center">Địa điểm đề xuất ghép </th>
+          <th class="text-center">Trạng thái đơn hàng</th>
+          <th class="text-center">Tuỳ chọn</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable.data">
+          <!-- <td (click)="clickDetail(data)" style="vertical-align: top;">{{ data.code }}</td>
+        <td (click)="clickDetail(data)" style="vertical-align: top;">{{ data.customerName }}</td>
+        <td (click)="clickDetail(data)" style="vertical-align: top;">{{ data.createdByDepartmentName }}</td>
+        <td (click)="clickDetail(data)" style="vertical-align: top;">{{ data.bookingNumber }}</td> -->
+
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.code}}</td>
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.__customer__?.code}}</td>
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.fromFmtETD}}</td>
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.toFmtETD}}</td>
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.__orderConts__?.length || 0}}</td>
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.contTypeName}}</td>
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.__ship__?.name}}</td>
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.bookingNumber}}</td>
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.orderPairedBkNum}}</td>
+          <td (click)="clickDetail(data)" style="vertical-align: top;">{{data.pairingLocationName}}</td>
+          <td (click)="clickDetail(data)" class="text-center" style="vertical-align: top;">
+            <nz-tag class="tag-status2" style="color: black;" [nzColor]="enumData.OrderStatus[data.status]?.color">
+              {{enumData.OrderStatus[data.status]?.name }}
+            </nz-tag>
+          </td>
+
+          <td class="text-nowrap">
+            <button *ngIf="data.status == 'MoiTao' && !data.isDeleted " nz-popconfirm
+              nzPopconfirmTitle="Bạn có chắc muốn chuyển qua điều phối?" nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="sendToOps(data.id)" nz-tooltip nzTooltipTitle="Chuyển qua điều phối chuyến" nz-button
+              nzShape="circle" class="mr-2 btn-primary">
+              <span nz-icon nzType="right-circle" nzTheme="outline"></span>
+            </button>
+            <button *ngIf="data.status == 'MoiTao' && !data.isDeleted " (click)="clickEdit(data)" nz-tooltip
+              nzTooltipTitle="Chỉnh sửa Order" nz-button nzShape="circle" class="mr-2 btn-primary">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button>
+            <button *ngIf="data.status !== 'MoiTao' && !data.isDeleted " (click)="onClickListCont(data)" nz-tooltip
+              nzTooltipTitle="Quản lí container đã điều phối" nz-button nzShape="circle" class="mr-2 btn-primary">
+              <i nz-icon nzType="profile" nzTheme="outline"></i>
+            </button>
+            <button
+              *ngIf="data.isDeleted && coreService.checkPermission(enumRole.Update.code) && data.status == 'MoiTao'"
+              nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn hoạt động lại?" nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="setActiveItem(data)" nz-tooltip nzTooltipTitle="Ngưng hoạt động" nz-button nzDanger
+              nzShape="circle" class="mr-2 btn-dangerous">
+              <i nz-icon nzType="stop" nzTheme="outline"></i>
+            </button>
+            <button
+              *ngIf="!data.isDeleted && coreService.checkPermission(enumRole.Update.code) && data.status == 'MoiTao'"
+              nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn ngưng hoạt động?" nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="setActiveItem(data)" nz-tooltip nzTooltipTitle="Đang hoạt động" nz-button nzShape="circle"
+              class="mr-2 btn-primary">
+              <i nz-icon nzType="play-circle"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+      nzShowSizeChanger>
+    </nz-pagination>
+    <ng-template #rangeTemplate let-range="range" let-total>
+      Dòng {{ range[0] }} tới {{ range[1] }} trong tổng số {{ total }} dòng
+    </ng-template>
+  </div>
+  <nz-row *ngIf="listOfData.length > 0" nzGutter="8" class="mt-3">
+    <nz-col nzSpan="4">Trạng thái đơn hàng:</nz-col>
+    <nz-col nzSpan="4" *ngFor="let item of lstOrderStatus">
+      <p [style.color]="item.color">
+        <nz-tag class="tag-status2" style="color: black;" [nzColor]="item.color">{{ item.name }} </nz-tag>
+      </p>
+    </nz-col>
+  </nz-row>

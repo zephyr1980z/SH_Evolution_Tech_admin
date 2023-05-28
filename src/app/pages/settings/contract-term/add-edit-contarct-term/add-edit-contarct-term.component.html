@@ -1,0 +1,96 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+  <hr />
+</div>
+
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-row nzGutter="4">
+
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired> Mã phụ lục</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mã phụ lục">
+          <input nz-input placeholder="Nhập mã phụ lục" name="code" [(ngModel)]="dataObject.code" pattern=".{1,50}"
+            autocomplete="off" required />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Tên phụ lục</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập tên phụ lục">
+          <input nz-input placeholder="Nhập tên phụ lục" name="name" [(ngModel)]="dataObject.name" pattern=".{1,50}"
+            autocomplete="off" required />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired class="text-left">Hình thức vận chuyển</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn hình thức vận chuyển">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn hình thức vận chuyển"
+            [(ngModel)]="dataObject.transportType" name="transportType" required>
+            <nz-option *ngFor="let item of lstTransportType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired class="text-left">Dịch vụ vận chuyển</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn dịch vụ vận chuyển">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn dịch vụ vận chuyển"
+            [(ngModel)]="dataObject.serviceType" name="serviceType" required>
+            <nz-option *ngFor="let item of dataServiceType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <!-- <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mức chiết khấu
+        </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mức chiết khấu!">
+          <input nz-input placeholder="Nhập mức chiết khấu" [(ngModel)]="dataObject.discountInfo" name="discountInfo"
+            autocomplete="off" pattern="^([.0-9]){1,250}$" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Người nhận chiết khấu</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập người nhận chiết khấu">
+          <input nz-input placeholder="Nhập người nhận chiết khấu" name="discountRecipient"
+            [(ngModel)]="dataObject.discountRecipient" pattern=".{1,250}" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col> -->
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Ngày hiệu lực </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn ngày hiệu lực">
+          <nz-date-picker nzPlaceHolder="Chọn ngày hiệu lực" name="effectDate" [(ngModel)]="dataObject.effectDate"
+            required nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ngày hết hiệu lực </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn ngày hết hiệu lực">
+          <nz-date-picker nzPlaceHolder="Chọn ngày hết hiệu lực" name="expireDate" [(ngModel)]="dataObject.expireDate"
+            nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" [disabled]="!frmAdd.form.valid" nz-button nzType="primary" (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

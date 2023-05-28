@@ -1,0 +1,104 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Biển Số Xe</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn biển số xe!">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.vehicleId" name="vehicleId"
+            nzPlaceHolder="Chọn biển số xe" required>
+            <nz-option *ngFor="let item of lstVehicle" [nzLabel]="item.regNo" [nzValue]="item.id">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Thời Gian Đổ Dầu</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn thời gian đổ dầu!">
+          <nz-date-picker [(ngModel)]="dataObject.oilingDate" nzPlaceHolder="Chọn thời gian đổ dầu" name="oilingDate"
+            nzFormat="dd/MM/yyyy" required>
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Số lượng dầu được đổ<i>&nbsp;(lít)</i>
+        </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng dầu được đổ!">
+          <input nz-input placeholder="Nhập số lượng dầu được đổ" [(ngModel)]="dataObject.quantity" name="quantity"
+            required currencyMask [options]="{ prefix: '', precision: 0, allowNegative: false  }" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Số Tiền Đổ Dầu<i>&nbsp;(VND)</i>
+        </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng số tiền đổ dầu!">
+          <input nz-input placeholder="Nhập số tiền đổ dầu" [(ngModel)]="dataObject.money" name="money" required
+            currencyMask [options]="{ prefix: '', precision: 0, allowNegative: false  }" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <div nz-row>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" [nzFor]="'imageBill'" class="text-left">
+              <span nz-tooltip nzTooltipPlacement="topLeft" [nzTooltipTitle]="'Hình Ảnh Hóa Đơn'">
+                Hình Ảnh Hóa Đơn</span>
+            </nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="20">
+              <nz-input-group nzSearch style="display: flex;">
+                <input class="passenger-input" nz-input [(ngModel)]="dataObject.imageBill"
+                  [ngModelOptions]="{standalone: true}" [attr.id]="'imageBill'" disabled>
+                <button type="button" nzType="primary" nz-button nzSearch (click)="handleClearImage('imageBill')">
+                  <i nz-icon nzType="delete" nzTheme="outline"></i>
+                </button>
+              </nz-input-group>
+            </nz-form-control>
+            <nz-form-control [nzSm]="4" [nzXs]="4">
+              <label for="choose-file-partner1" id="choose-file-label1" class="custom-file-upload"
+                style="height: 32px;">
+                <i nz-icon nzType="upload" nzTheme="outline" style="font-size: 18px;"></i>
+              </label>
+              <input name="uploadDocument-partner1" type="file" class="imageBill" id="choose-file-partner1"
+                style="display: none;" (change)="handleFileInput($event.target, 'imageBill')"
+                accept=".png, .jpg, .jpeg" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16" *ngIf="dataObject.imageBill">
+          <nz-form-item nzFlex class="ml-3">
+            <nz-form-control [nzSm]="24" [nzXs]="24" class="mt-2">
+
+              <img nz-image style="margin-right: 10px; margin-top: 10px;" width="200px" height="200px"
+                nzSrc="{{ dataObject.imageBill }}" alt="{{dataObject.imageBill}}" />
+
+              <!-- <a href="{{dataObject.imageBill}}" target="_blank">
+                <div style="width: 250px; height: 250px; ">
+                  <img nz-image style="margin-right: 10px; margin-top: 10px;" width="100px" height="100px"
+                    nzSrc="{{ dataObject.imageBill }}" alt="{{dataObject.imageBill}}" />
+                </div>
+              </a> -->
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div nz-row>
+    <div nz-col [nzSpan]="24" class="text-center">
+      <button nzShape="round" nz-button [disabled]="!frmAdd.form.valid" nzType="primary" class="mr-3"
+        (click)="onSave()">Lưu</button>
+    </div>
+  </div>
+</form>

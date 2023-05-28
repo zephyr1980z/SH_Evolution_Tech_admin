@@ -1,0 +1,71 @@
+<div class="text-center">
+  <h2 class="text-title text-up">{{modelTitle}}</h2>
+</div>
+<nz-tabset *ngIf="dataObject" class="mt-4">
+  <nz-tab nzTitle="Thông Tin Chung">
+    <div nz-row nzGutter="6">
+      <nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã máy</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <b>{{ dataObject.code }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên máy</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <b>{{ dataObject.name }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Trạng thái</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+              <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">Không hoạt động</nz-tag>
+              <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+            </nz-form-control>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col [nzSpan]="6" *ngIf="dataObject.description">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ghi chú</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <textarea rows="2" nz-input readonly [(ngModel)]="dataObject.description" name="description"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </div>
+    <nz-row nzJustify="center">
+      <h2>Danh sách phụ tùng</h2>
+      <nz-table nz-col nzSpan="24" class="mb-3" [nzData]="['']" [(nzPageSize)]="pageSize" [nzLoading]="false"
+        [nzShowPagination]="false" nzBordered nzTemplateMode>
+        <thead>
+          <tr>
+            <th class="text-center"> Mã phụ tùng</th>
+            <th class="text-center"> Tên phụ tùng</th>
+            <th class="text-center"> Số lượng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dataObject.lstItem">
+            <td class="mw-25">{{item.code}}</td>
+            <td class="mw-25">{{item.name}}</td>
+            <td class="mw-25 text-right">{{item.quantity | number}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-row>
+  </nz-tab>
+</nz-tabset>
+<div nz-row class="mt-3">
+  <div nz-col [nzSpan]="24" class="text-center">
+    <button nz-button nzShape="round" nzType="default" class="mr-3" (click)="closeDialog()">
+      <i nz-icon nzType="lock" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</div>

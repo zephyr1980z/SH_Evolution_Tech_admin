@@ -1,0 +1,10 @@
+.ant-upload-picture-card-wrapper {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.ant-upload.ant-upload-drag {
+  margin-left: 5px;
+  padding: 13px;
+}

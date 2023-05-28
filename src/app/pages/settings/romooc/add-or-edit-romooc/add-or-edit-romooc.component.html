@@ -1,0 +1,95 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Mã Rơ moóc</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập mã Rơ moóc (1-250 kí tự)!">
+          <input nz-input [disabled]="isEditItem" placeholder="Nhập mã Rơ moóc" [(ngModel)]="dataObject.code"
+            name="code" required pattern=".{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <!-- <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Tên Romooc</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập tên romooc (1-250 kí tự)!">
+          <input nz-input placeholder="Nhập tên romooc" [(ngModel)]="dataObject.name" name="name" required />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col> -->
+    <nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loại trục</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.shaftType" name="shaftType"
+            nzPlaceHolder="Chọn loại trục" pattern>
+            <nz-option *ngFor="let item of lstShaftType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Tải trọng</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập tải trọng!">
+          <input nz-input placeholder="Nhập tải trọng" [(ngModel)]="dataObject.weight" name="weight" required
+            pattern=".{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Biển số Rơ moóc</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập biển số Rơ moóc!">
+          <input nz-input [(ngModel)]="dataObject.regNo" name="regNo" placeholder="Nhập biển số Rơ moóc" required
+            pattern=".{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Địa chỉ Rơ moóc</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input [(ngModel)]="dataObject.address" name="address" placeholder="Nhập địa chỉ Rơ moóc" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Tài xế hiện tại</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.driverId" name="driverId"
+            nzPlaceHolder="Chọn tài xế">
+            <nz-option *ngFor="let item of dataDriver" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-upload nzListType="picture-card" [(nzFileList)]="dataObject.fileList" [nzAction]="urlAction"
+    [nzPreview]="handlePreview" [nzMultiple]="true" (nzChange)="handleChange($event)">
+    <div>
+      <i nz-icon nzType="plus"></i>
+      <div style="margin-top: 8px">Upload</div>
+    </div>
+  </nz-upload>
+
+  <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+    (nzOnCancel)="previewVisible = false">
+    <ng-template #modalContent>
+      <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+    </ng-template>
+  </nz-modal>
+
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" nz-button nzType="primary" class="mr-3" [disabled]="!frmAdd.form.valid"
+        (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

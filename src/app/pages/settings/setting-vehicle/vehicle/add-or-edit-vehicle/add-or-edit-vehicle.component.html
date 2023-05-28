@@ -1,0 +1,110 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Mã Phương Tiện</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập mã phương tiện">
+          <input nz-input [disabled]="isEditItem" placeholder="Nhập mã phương tiện" [(ngModel)]="dataObject.code"
+            name="code" required pattern=".{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Biển số Phương Tiện</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập biển số phương tiện">
+          <input nz-input [(ngModel)]="dataObject.regNo" name="regNo" required pattern=".{1,250}"
+            placeholder="Nhập biển số phương tiện" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Địa chỉ Phương Tiện</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input [(ngModel)]="dataObject.address" name="address" required pattern=".{1,500}"
+            placeholder="Nhập địa chỉ phương tiện" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Dòng Xe</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.vehicleBrandId" name="vehicleBrandId"
+            nzPlaceHolder="Chọn dòng xe">
+            <nz-option *ngFor="let item of lstVehicleBrand" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Địa điểm</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn địa điểm">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.locationId" name="locationId"
+            nzPlaceHolder="Chọn địa điểm" required>
+            <nz-option *ngFor="let item of lstLocation" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Tài xế mặc định </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.defaultDriverId" name="defaultDriverId"
+            nzPlaceHolder="Chọn tài xế mặc định">
+            <nz-option *ngFor="let item of dataDriver" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Tài xế hiện tại</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.driverId" name="driverId"
+            nzPlaceHolder="Chọn tài xế">
+            <nz-option *ngFor="let item of dataDriver" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">B.s rơ moóc hiện tại</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.romoocId" name="romoocId"
+            nzPlaceHolder="Chọn biển số rơ moóc">
+            <nz-option *ngFor="let item of dataRomooc" [nzLabel]="item.regNo" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-upload nzListType="picture-card" [(nzFileList)]="dataObject.fileList" [nzAction]="urlAction"
+    [nzPreview]="handlePreview" [nzMultiple]="true" (nzChange)="handleChange($event)">
+    <div>
+      <i nz-icon nzType="plus"></i>
+      <div style="margin-top: 8px">Upload</div>
+    </div>
+  </nz-upload>
+  <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+    (nzOnCancel)="previewVisible = false">
+    <ng-template #modalContent>
+      <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+    </ng-template>
+  </nz-modal>
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" nz-button nzType="primary" class="mr-3" [disabled]="!frmAdd.form.valid"
+        (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

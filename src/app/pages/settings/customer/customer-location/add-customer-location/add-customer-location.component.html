@@ -1,0 +1,78 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">THÊM ĐỊA ĐIỂM KHÁCH HÀNG {{ data.name | uppercase }}</span>
+  <br />
+</div>
+
+<nz-collapse nzBordered="false">
+  <nz-collapse-panel nzHeader="Tìm kiếm" [nzActive]="false" [nzDisabled]="false">
+    <nz-row nzGutter="24">
+      <nz-col nzSpan="6">
+        <input nz-input [(ngModel)]="dataSearch.code" name="code" placeholder="Lọc mã" />
+      </nz-col>
+      <nz-col nzSpan="6">
+        <input nz-input [(ngModel)]="dataSearch.name" name="name" placeholder="Lọc tên" />
+      </nz-col>
+      <nz-col nzSpan="6">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.type" name="type"
+          nzPlaceHolder="Chọn loại địa điểm">
+          <nz-option *ngFor="let item of dataLocationType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+        </nz-select>
+      </nz-col>
+      <nz-col nzSpan="6">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.statusId" name="statusId"
+          nzPlaceHolder="Chọn trạng thái">
+          <nz-option *ngFor="let item of dataFilterStatus" [nzLabel]="item.name" [nzValue]="item.value"></nz-option>
+        </nz-select>
+      </nz-col>
+    </nz-row>
+    <nz-row nzGutter="24" align="center" class="mt-2">
+      <nz-col nzSpan="24">
+        <button nz-button nzType="primary" (click)="searchData(true)">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm Kiếm
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-table #customerLocationTable [nzData]="listOfData" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+  [(nzPageSize)]="pageSize" [nzScroll]="{ y: '48.5vh' }" class="mt-3" [nzShowPagination]="false" nzBordered
+  [nzLoading]="loading">
+  <thead>
+    <tr>
+      <th nzWidth="50px" class="text-center" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="onAllChecked($event)"></th>
+      <th class="text-center">Mã địa điểm</th>
+      <th class="text-center">Tên địa điểm</th>
+      <th class="text-center">Địa điểm</th>
+      <th class="text-center">Loại địa điểm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of customerLocationTable.data">
+      <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+      <td (click)="onItemChecked(data.id,!setOfCheckedId.has(data.id))">{{ data.code }}</td>
+      <td (click)="onItemChecked(data.id,!setOfCheckedId.has(data.id))">{{ data.name }}</td>
+      <td (click)="onItemChecked(data.id,!setOfCheckedId.has(data.id))">{{ data.address }}
+      </td>
+      <td (click)="onItemChecked(data.id,!setOfCheckedId.has(data.id))">
+        {{ coreService.getEnumElementName(enumData.LocationType, data.type) }}
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+  (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+  nzShowSizeChanger class="mt-3">
+</nz-pagination>
+<ng-template #rangeTemplate let-range="range" let-total>
+  {{ range[0] }}-{{ range[1] }} of {{ total }} items
+</ng-template>
+
+<nz-row class="mt-3">
+  <nz-col nzSpan="24" class="text-center">
+    <button [disabled]="checkedLst.length <= 0" (click)="onAddLocation()" nz-button class="ant-btn-blue">
+      Thêm
+    </button>
+  </nz-col>
+</nz-row>

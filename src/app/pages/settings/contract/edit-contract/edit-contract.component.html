@@ -1,0 +1,72 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-row nzGutter="4">
+    <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Khách Hàng</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn khách hàng">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn khách hàng" [(ngModel)]="dataObject.customerId"
+            name="customerId" required [disabled]="isEditItem">
+            <nz-option *ngFor="let item of lstCustomer" [nzLabel]="item.code" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired> Mã Hợp Đồng</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng thêm mã hợp đồng">
+          <input nz-input placeholder="Nhập mã hợp đồng" [(ngModel)]="dataObject.code" name="code" required
+            pattern=".{1,50}" autocomplete="off" [disabled]="isEditItem" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Tên Hợp Đồng</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <input nz-input placeholder="Nhập tên hợp đồng" [(ngModel)]="dataObject.name" name="name" pattern=".{1,50}"
+            autocomplete="off" required />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ngày Ký</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-date-picker [(ngModel)]="dataObject.signDate" nzPlaceHolder="Chọn ngày ký" name="signDate"
+            nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Ngày Hiệu Lực </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-date-picker [(ngModel)]="dataObject.effectDate" nzPlaceHolder="Chọn ngày hiệu lực" name="effectDate"
+            required nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Ngày Hết Hiệu Lực </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-date-picker [(ngModel)]="dataObject.expireDate" nzPlaceHolder="Chọn ngày hết hiệu lực" name="expireDate"
+            nzFormat="dd-MM-yyyy" required>
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" nz-button nzType="primary" (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

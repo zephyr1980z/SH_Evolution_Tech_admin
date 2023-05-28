@@ -1,0 +1,62 @@
+<nz-collapse nzBordered="false" nzOpen class="mb-2">
+  <nz-collapse-panel nzHeader="Tìm kiếm" [nzActive]="true">
+    <nz-row nzGutter="8">
+      <nz-col [nzSpan]="6">
+        <input nz-input [(ngModel)]="dataSearch.code" name="code" placeholder="Lọc mã lô phụ tùng" />
+      </nz-col>
+      <nz-col [nzSpan]="6">
+        <input nz-input [(ngModel)]="dataSearch.itemCode" name="itemCode" placeholder="Lọc mã phụ tùng" />
+      </nz-col>
+    </nz-row>
+    <nz-row class="mt-2" nzJustify="center">
+      <nz-col nzSpan="2">
+        <button nz-button nzType="primary" nzShape="round" (click)="searchData(true)">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+<nz-row class="mb-2">
+  <button nz-button nzType="primary" class="mr-3 ml-3" (click)="onDownloadExcel()" nzShape="round">
+    <i nz-icon nzType="download" nzTheme="outline"></i> Tải Excel
+  </button>
+</nz-row>
+<div nz-row>
+  <nz-table nz-col nzSpan="24" class="mb-3" #ajaxTable [nzData]="listOfData" [(nzPageSize)]="pageSize"
+    [nzLoading]="loading" [nzShowPagination]="false" nzBordered nzTemplateMode>
+    <thead>
+      <tr>
+        <th class="text-center"> Mã phụ tùng</th>
+        <th class="text-center"> Tên phụ tùng</th>
+        <th class="text-center"> Ngày nhập</th>
+        <th class="text-center"> Ngày sản xuất</th>
+        <th class="text-center"> Hạn sử dụng</th>
+        <th class="text-center"> Số lượng nhập dự kiến</th>
+        <th class="text-center"> Số lượng nhập thực</th>
+        <th class="text-center"> Số lượng còn lại</th>
+        <th class="text-center"> Giá nhập</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="mw-25">{{ data.itemCode}}</td>
+        <td class="mw-25">{{ data.itemName}}</td>
+        <td class="mw-25">{{data.importDate | date: 'dd/MM/yyyy '}}</td>
+        <td class="mw-25">{{ data.manufactureDate | date: 'dd/MM/yyyy' }}</td>
+        <td class="mw-25">{{ data.expiryDate | date: 'dd/MM/yyyy'}}</td>
+        <td class="mw-25 text-right">{{ data.estimatedQuantity | number }}</td>
+        <td class="mw-25 text-right">{{ data.quantity | number }}</td>
+        <td class="mw-25 text-right">{{ data.itemDetailQuantity | number }}</td>
+        <td class="mw-25 text-right">{{ data.itemDetailImportPrice | number }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+    (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+    nzShowSizeChanger>
+  </nz-pagination>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Dòng {{ range[0] }} tới {{ range[1] }} trong tổng số {{ total }} dòng
+  </ng-template>
+</div>

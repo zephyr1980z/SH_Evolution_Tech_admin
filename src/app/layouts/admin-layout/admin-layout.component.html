@@ -1,0 +1,112 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null">
+    <div id="remove-scroll" class="scroll">
+      <div class="sidebar-logo" *ngIf="!isCollapsed">
+        <a [routerLink]="['/welcome']">
+          <img src="assets/img/1024QT.png" alt="logo" style="padding: 0 70px;" />
+        </a>
+      </div>
+      <div class="sidebar-logo-mini" *ngIf="isCollapsed">
+        <a [routerLink]="['/welcome']">
+          <img src="assets/img/1024QT.png" alt="logo" />
+        </a>
+      </div>
+      <ul class="sidebar-menu" nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <li class="sidebar-menu" nz-submenu nzTitle="Công cụ" nzIcon="tool">
+          <ul class="sidebar-submenu">
+            <li class="sidebar-submenu" nz-submenu nzTitle="Swagger">
+              <ul class="submenu-item">
+                <li nz-menu-item nzMatchRouter>
+                  <a [routerLink]="['/tools/swagger-to-excel']">Chuyển đổi link thành file Excel</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </nz-sider>
+  <nz-layout class="main_content">
+    <nz-header>
+      <div class="app-header">
+        <div class="header-trigger" (click)="(isCollapsed = !isCollapsed) && removeScroll()">
+          <i nz-icon nzType="{{isCollapsed ? 'menu-unfold' : 'menu-fold'}}"></i>
+        </div>
+        <div class="header-right">
+          <nz-badge class="notify" [nzCount]="numNofityNew" [nzOffset]=[-10,20] style="margin-right: 8px;">
+            <button class="header-right-button" nz-button nzType="link" nz-popover [nzPopoverContent]="notifyTemplate"
+              nzPopoverPlacement="bottomRight">
+              <span style="font-weight: 500;margin-bottom: 10px;">Thông báo</span>
+              <i nz-icon nzType="bell" nzTheme="outline" style="font-size: 30px;color: orange;"></i>
+            </button>
+          </nz-badge>
+
+          <ng-template #notifyTemplate>
+            <b *ngIf="lstNotify.length > 0" (click)="onReadAll()" style="color: rgb(31 74 120);cursor: pointer;">
+              Đánh dấu tất cả đã đọc
+            </b>
+            <nz-list [nzLoading]="loading" class="demo-loadmore-list" style="width: 365px"
+              [ngClass]="lstNotify && lstNotify.length > 5 ? 'popover-scroll' : ''" id="notifyTemplate">
+              <br />
+              <nz-list-item style="margin-right: 1rem;line-height: 0 !important;" *ngFor="let item of lstNotify"
+                (click)="viewNotify(item)">
+                <nz-badge [nzDot]="item.status === enumNotifyStatus.New.code" [nzOffset]=[-3,3]
+                  style="width: 450px; cursor: pointer; "
+                  [style.background-color]="enumNotifyStatus[item.status]?.color">
+                  <nz-list-item-meta>
+                    <nz-list-item-meta-title>
+                      Tên thông báo: {{ item.title }}
+                      <br />
+                      <i style="font-weight: 500; color:#00000073">{{item.createdAt | date: 'HH:mm dd/MM/yyyy'}}</i>
+                    </nz-list-item-meta-title>
+                    <nz-list-item-meta-description style="width: 300px;">
+                      <p>
+                        Nội dung thông báo: {{item.content}}
+                      </p>
+                    </nz-list-item-meta-description>
+                  </nz-list-item-meta>
+                </nz-badge>
+
+              </nz-list-item>
+              <div class="loadmore text-center" nz-list-load-more>
+                <button *ngIf="lstNotify && lstNotify.length > 0 && lstNotify.length < totalNotify" nzSpan="12"
+                  nz-button nzType="primary" nzShape="round" (click)="loadMoreNotify()">Xem thêm
+                </button>
+              </div>
+              <i *ngIf="!lstNotify || lstNotify.length === 0">Chưa có thông báo</i>
+            </nz-list>
+          </ng-template>
+          <div nz-dropdown [nzDropdownMenu]="menu">
+            <span class="header-right-avatar">
+              <img src="../../../assets/img/logologin.png" alt="avatar" height="30" width="30" />
+            </span>
+            <span class="mr-3">{{ currentUser ? currentUser.username : '' }}</span>
+          </div>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item>
+                <a [routerLink]="['/change-password']">
+                  <i nz-icon nzType="edit" nzTheme="outline" class="mr-1"></i>
+                  Đổi mật khẩu
+                </a>
+              </li>
+              <li nz-menu-item>
+                <a href="javascript:void(0)" (click)="logout()">
+                  <i nz-icon nzType="logout" nzTheme="outline" class="mr-1"></i>
+                  Đăng xuất
+                </a>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

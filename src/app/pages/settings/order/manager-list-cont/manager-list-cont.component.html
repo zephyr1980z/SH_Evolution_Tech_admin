@@ -1,0 +1,383 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle + ' - ' + dataParent.serviceName | uppercase }}</span>
+  <br />
+</div>
+
+<nz-collapse nz-col nzSpan="24" [nzBordered]="true" class="mb-2">
+  <nz-collapse-panel nzHeader="Chỉnh sửa thông tin" nzActive="false" class="ant-bg-antiquewhite">
+    <form nz-form class="ant-advanced-search-form mb-2" #frmAdd="ngForm">
+      <nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="8">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Loại container
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn loại container!">
+              <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.contTypeId" name="contTypeId"
+                nzPlaceHolder="Chọn loại container" required [disabled]="mapOfCheckedId.size === 0">
+                <nz-option *ngFor="let item of lstContType" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="8" *ngIf="dataObject.transportType == enumData.TransportType.LCL.code">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Khối lượng container
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn khối lượng container!">
+              <input nz-input placeholder="Nhập khối lượng container" name="weight"
+                [disabled]="mapOfCheckedId.size === 0" [(ngModel)]="dataObject.weight" pattern=".{1,50}"
+                autocomplete="off" required />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Phụ lục hợp đồng</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24">
+              <nz-select [disabled]="mapOfCheckedId.size === 0" nzShowSearch nzAllowClear
+                nzPlaceHolder="Chọn phụ lục hợp đồng" [(ngModel)]="dataObject.customerContractTermId"
+                name="customerContractTermId" required>
+                <nz-option *ngFor="let item of lstContractTerm" [nzLabel]="item.name" [nzValue]="item.id">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+
+      </nz-row>
+      <nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex *ngIf="dataParent.serviceType != enumData.ServiceType.NhapKhau.code">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Địa điểm lấy container rỗng
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn Địa điểm lấy container rỗng!">
+              <nz-select [disabled]="mapOfCheckedId.size === 0" nzShowSearch nzAllowClear
+                [(ngModel)]="dataObject.emptyPickupLocationId" name="emptyPickupLocationId"
+                nzPlaceHolder="Chọn Địa điểm lấy container rỗng" (ngModelChange)="showAddress()" required>
+                <nz-option *ngFor="let item of lstLocation" [nzLabel]="item.name" [nzValue]="item.id">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex *ngIf="dataObject.emptyPickupLocationAddress">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa chỉ lấy container rỗng
+            </nz-form-label>
+            <span>{{dataObject.emptyPickupLocationAddress}}</span>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item nzFlex *ngIf="dataParent.serviceType != enumData.ServiceType.NhapKhau.code">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Thời gian lấy container rỗng
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập Thời gian lấy container rỗng!">
+              <nz-date-picker [disabled]="mapOfCheckedId.size === 0" [(ngModel)]="dataObject.emptyPickupTime"
+                nzPlaceHolder="Chọn Thời gian lấy container rỗng" name="emptyPickupTime" nzShowTime
+                nzFormat="yyyy-MM-dd HH:mm:ss" required>
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Địa điểm lấy hàng
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn Địa điểm lấy hàng!">
+              <nz-select [disabled]="mapOfCheckedId.size === 0" nzShowSearch nzAllowClear
+                [(ngModel)]="dataObject.fromLocationId" name="fromLocationId" nzPlaceHolder="Chọn Địa điểm lấy hàng"
+                (ngModelChange)="showAddress()" required>
+                <nz-option *ngFor="let item of lstLocation" [nzLabel]="item.name" [nzValue]="item.id">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex *ngIf="dataObject.fromLocationId">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa chỉ lấy hàng
+            </nz-form-label>
+            <span>{{dataObject.fromLocationAddress}}</span>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Thời gian dự kiến đến lấy hàng
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập Thời gian dự kiến đến lấy hàng!">
+              <nz-date-picker [disabled]="mapOfCheckedId.size === 0" [(ngModel)]="dataObject.fromETD"
+                nzPlaceHolder="Chọn Thời gian dự kiến đến lấy hàng" name="fromETD" nzShowTime
+                nzFormat="yyyy-MM-dd HH:mm:ss" required>
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Địa điểm giao hàng
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn Địa điểm giao hàng!">
+              <nz-select [disabled]="mapOfCheckedId.size === 0" (ngModelChange)="showAddress()" nzShowSearch
+                nzAllowClear [(ngModel)]="dataObject.toLocationId" name="toLocationId"
+                nzPlaceHolder="Chọn Địa điểm giao hàng" required>
+                <nz-option *ngFor="let item of lstLocation" [nzLabel]="item.name" [nzValue]="item.id">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex *ngIf="dataObject.toLocationId">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa chỉ giao hàng
+            </nz-form-label>
+            <span>{{dataObject.toLocationAddress}}</span>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Thời gian dự kiến giao hàng
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập Thời gian dự kiến giao hàng!">
+              <nz-date-picker [disabled]="mapOfCheckedId.size === 0" [(ngModel)]="dataObject.toETD"
+                nzPlaceHolder="Chọn Thời gian dự kiến giao hàng" name="toETD" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss"
+                required>
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex *ngIf="dataParent.serviceType != enumData.ServiceType.XuatKhau.code">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Địa điểm trả container rỗng
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn Địa điểm trả container rỗng!">
+              <nz-select [disabled]="mapOfCheckedId.size === 0" nzShowSearch nzAllowClear
+                [(ngModel)]="dataObject.emptyReturnLocationId" name="emptyReturnLocationId"
+                (ngModelChange)="showAddress()" nzPlaceHolder="Chọn Địa điểm trả container rỗng" required>
+                <nz-option *ngFor="let item of lstLocation" [nzLabel]="item.name" [nzValue]="item.id">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex *ngIf="dataObject.emptyReturnLocationAddress">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa chỉ trả công container rỗng
+            </nz-form-label>
+            <span>{{dataObject.emptyReturnLocationAddress}}</span>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <nz-form-item nzFlex *ngIf="dataParent.serviceType != enumData.ServiceType.XuatKhau.code">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Thời gian trả container rỗng
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập Thời gian trả container rỗng!">
+              <nz-date-picker [disabled]="mapOfCheckedId.size === 0" [(ngModel)]="dataObject.emptyReturnTime"
+                nzPlaceHolder="Chọn Thời gian trả container rỗng" name="emptyReturnTime" nzShowTime
+                nzFormat="yyyy-MM-dd HH:mm:ss" required>
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Chọn đơn hàng ghép cùng
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24">
+              <nz-select [disabled]="mapOfCheckedId.size === 0" nzShowSearch nzAllowClear
+                [(ngModel)]="dataObject.orderPairedId" name="orderPairedId" nzPlaceHolder="Chọn đơn hàng ghép cùng">
+                <nz-option *ngFor="let item of lstOrder" [nzLabel]="item.code" [nzValue]="item.id"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </nz-row>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Chọn địa điểm đề xuất ghép chuyến
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-select [disabled]="mapOfCheckedId.size === 0" nzShowSearch nzAllowClear
+              [(ngModel)]="dataObject.pairingLocationId" name="pairingLocationId"
+              nzPlaceHolder="Chọn đơn hàng ghép cùng">
+              <nz-option *ngFor="let item of lstEmployee" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-row class="mt-3">
+        <nz-col nzSpan="24" class="text-center custome-td">
+          <button nzShape="round" nz-button nzType="primary" class="mr-3" [disabled]="!frmAdd.form.valid " nz-popconfirm
+            nzPopconfirmTitle="Bạn có muốn tính lại giá container không?" (nzOnConfirm)="confirm()"
+            (nzOnCancel)="cancel()">Lưu</button>
+          <button nzShape="round" nz-button nzType="primary" class="mr-3" [disabled]="dataObjectItem.id"
+            (click)="clickCancel()">Trở lại</button>
+        </nz-col>
+      </div>
+
+    </form>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<i style="color:#3c3c3c" class="mt-2">*Chọn container cần điều chỉnh trước khi chỉnh sửa</i>
+
+<div nz-row class="mt-2">
+  <div nz-col nzSpan="24">
+    <nz-table class="mb-3" #ajaxTable1 [nzData]="listOfData" [nzShowPagination]="false" [nzFrontPagination]="false"
+      [nzScroll]="{ x:'1100px' }" nzBordered [nzLoading]="loading">
+      <thead>
+        <tr>
+          <th nzWidth="50px" class=" text-center " nzLeft [nzChecked]="mapOfCheckedId.size > 0"
+            (nzCheckedChange)="onCheckAll()"></th>
+          <th nzWidth="100px" class="text-center custome-td">Loại cont</th>
+          <!-- __contType__?.name -->
+          <th nzWidth="250px" class="text-center custome-td"
+            *ngIf="dataParent.serviceType != enumData.ServiceType.NhapKhau.code">Điểm lấy rỗng</th>
+          <!-- emptyPickupLocationAddress -->
+          <th nzWidth="150px" class="text-center custome-td"
+            *ngIf="dataParent.serviceType != enumData.ServiceType.NhapKhau.code">Thời gian lấy rỗng</th>
+          <!-- emptyPickupTime -->
+          <th nzWidth="250px" class="text-center custome-td">Điểm lấy hàng</th>
+          <!-- fromLocationAddress -->
+          <th nzWidth="150px" class="text-center custome-td">Thời gian lấy hàng</th>
+          <!-- fromLocationTime -->
+          <th nzWidth="250px" class="text-center custome-td">Điểm giao hàng</th>
+          <!-- toLocationAddress -->
+          <th nzWidth="150px" class="text-center custome-td">Thời gian giao hàng</th>
+          <!-- toLocationTime -->
+          <th nzWidth="250px" class="text-center custome-td"
+            *ngIf="dataParent.serviceType != enumData.ServiceType.XuatKhau.code">Điểm trả rỗng</th>
+          <!-- emptyReturnLocationAddress -->
+          <th nzWidth="150px" class="text-center custome-td"
+            *ngIf="dataParent.serviceType != enumData.ServiceType.XuatKhau.code">Thời gian trả rỗng</th>
+          <!-- emptyReturnLocationTime -->
+          <th nzWidth="150px" class="text-center custome-td">ĐH ghép chuyến</th>
+          <!-- __orderPaired__?.code -->
+          <th nzWidth="150px" class="text-center custome-td">Địa điểm đề xuất ghép chuyến</th>
+          <th nzWidth="150px" class="text-center custome-td">Số Cont</th>
+          <th nzWidth="150px" class="text-center custome-td">Số xe</th>
+          <th nzWidth="150px" class="text-center custome-td">Số romooc</th>
+          <!-- pairingByUser?.name -->
+          <th nzWidth="200px" class="text-center custome-td">Lí do hủy</th>
+          <!-- note -->
+          <th nzWidth="150px" class="text-center custome-td">Ngày hủy</th>
+          <!-- dateIsDeleted -->
+          <th nzWidth="200px" class="text-center custome-td">Trạng thái</th>
+          <!-- status -->
+          <th nzWidth="150px">Tác vụ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ajaxTable1.data">
+          <td nzLeft class="column-check" [nzChecked]="mapOfCheckedId.has(data.id)"
+            (nzCheckedChange)="onItemChecked(data, $event)" [nzDisabled]="data.isDeleted === true">
+          </td>
+
+          <td class="text-center custome-td">{{data.__contType__?.name}}</td>
+          <td class="text-center custome-td" *ngIf="dataParent.serviceType != enumData.ServiceType.NhapKhau.code">
+            {{data.emptyPickupLocationName}}</td>
+          <td class="text-center custome-td" *ngIf="dataParent.serviceType != enumData.ServiceType.NhapKhau.code">
+            {{data.emptyPickupTime | date: 'HH:mm dd/MM/yyyy'}}</td>
+          <td class="text-center custome-td">{{data.fromLocationName}}</td>
+          <td class="text-center custome-td">{{data.fromETD | date: 'HH:mm dd/MM/yyyy'}}</td>
+          <td class="text-center custome-td">{{data.toLocationName}}</td>
+          <td class="text-center custome-td">{{data.toETD | date: 'HH:mm dd/MM/yyyy'}}</td>
+          <td class="text-center custome-td" *ngIf="dataParent.serviceType != enumData.ServiceType.XuatKhau.code">
+            {{data.emptyReturnLocationName}}</td>
+          <td class="text-center custome-td" *ngIf="dataParent.serviceType != enumData.ServiceType.XuatKhau.code">
+            {{data.emptyReturnTime | date: 'HH:mm dd/MM/yyyy'}}
+          </td>
+          <td class="text-center custome-td">{{data.__orderPaired__?.code}}</td>
+          <td class="text-center custome-td">{{data.__pairingLocation__?.name}}</td>
+          <td class="text-center custome-td">{{data.opsContActive?.contNo}}</td>
+          <td class="text-center custome-td">{{data.uniquePropsRoute?.vehicleRegNo}}</td>
+          <td class="text-center custome-td">{{data.uniquePropsRoute?.romoocRegNo}}</td>
+          <td class="text-center custome-td">{{data.note}}</td>
+          <td class="text-center custome-td">{{data.dateIsDeleted | date: 'HH:mm dd/MM/yyyy'}}</td>
+          <td class="text-center custome-td">{{data.status}}</td>
+          <td class="text-center custome-td">
+            <!-- <button *ngIf="data.isDeleted" nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn hoạt động lại?"
+              nzPopconfirmPlacement="bottom" (nzOnConfirm)="setActiveItem(data)" nz-tooltip
+              nzTooltipTitle="Ngưng hoạt động" nz-button nzDanger nzShape="circle" class="mr-2 btn-dangerous">
+              <i nz-icon nzType="stop" nzTheme="outline"></i>
+            </button> -->
+            <button *ngIf="data.isDeleted" nz-tooltip nzTooltipTitle="Ngưng hoạt động" nz-button nzDanger
+              nzShape="circle" class="mr-2 btn-dangerous">
+              <i nz-icon nzType="stop" nzTheme="outline"></i>
+            </button>
+            <button *ngIf="!data.isDeleted" (click)="createTplModal(tplContent,data)" nz-tooltip
+              nzTooltipTitle="Đang hoạt động" nz-button nzShape="circle" class="mr-2 btn-primary">
+              <i nz-icon nzType="play-circle"></i>
+            </button>
+            <!-- <button (click)="clickEdit(data)" nz-tooltip nzTooltipTitle="Chỉnh sửa" nz-button nzShape="circle"
+              class="mr-2 btn-primary">
+              <i nz-icon nzType="edit"></i>
+            </button> -->
+            <!-- <button (click)="clickEdit(data)" nz-tooltip nzTooltipTitle="Chỉnh Sửa" nz-button nzShape="circle"
+              class="mr-2 btn-primary">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button> -->
+          </td>
+
+          <!-- <td class="text-right">
+            <b style="color: blue;">{{ item.price | number: '1.0-2' }}</b>
+          </td>
+          <td class=" text-right">
+            <b style="color: red;">{{ (item.moneyLeft > 0 ? item.moneyLeft : 0) | number: '1.0-2' }}</b>
+          </td>
+          <td class="text-center custome-td">
+            <button nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn thu tiền" nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="setPaidItem(item)" nz-tooltip nzTooltipTitle="Thu tiền" nz-button nzType="primary"
+              nzShape="circle" [disabled]="item.paid == null || item.paid <= 0">
+              <i nz-icon nzType="save"></i>
+            </button>
+          </td>
+          <td>
+            <nz-form-control [nzSm]="24" [nzXs]="24" *ngIf="coreService.checkPermission(DebtCustomer?.Update?.code)">
+              <input [disabled]="tongTienPhaiTra == 0" style="width: 150px; font-weight: bold;" nz-input currencyMask
+                placeholder="Nhập số tiền" [style.background-color]="item.isDeleted ? 'orange' : 'white'"
+                [(ngModel)]="item.paid" name="paid" (ngModelChange)="onBlurMoneny(item)" />
+            </nz-form-control>
+          </td>
+          <td>
+            <nz-form-control [nzSm]="24" [nzXs]="24">
+              <nz-date-picker [disabled]="tongTienPhaiTra == 0" style="width: 150px;" [nzFormat]="dateFormat"
+                name="paymentDate" nzPlaceHolder="Ngày thu " [(ngModel)]="item.paymentDate"
+                [nzDisabledDate]="disabledDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </td>
+          <td class="text-center custome-td">
+            <nz-tag class="tag-status" [nzColor]="item.statusColor">
+              {{ coreService.getEnumElementName(enumData.DebtStatus, item.status) }}
+            </nz-tag>
+          </td> -->
+        </tr>
+      </tbody>
+    </nz-table>
+    <!-- <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+      nzShowSizeChanger>
+    </nz-pagination> -->
+    <!-- <ng-template #rangeTemplate let-range="range" let-total>
+      Dòng {{ range[0] }} tới {{ range[1] }} trong tổng số {{ total }} dòng
+    </ng-template> -->
+  </div>
+</div>
+<!-- <div class="mt-3" nz-row>
+  <div nz-col [nzSpan]="24" class="text-center custome-td">
+    <button nzShape="round" *ngIf="coreService.checkPermission(DebtCustomer?.Update?.code)"
+      [disabled]="!frmAdd.form.valid " nz-button nzType="primary" (click)="onSave()">
+      <i nz-icon nzType="save" nzTheme="outline"></i>Lưu Công Nợ Mới
+    </button>
+  </div>
+</div> -->
+
+<ng-template #tplContent let-params>
+  <textarea rows="4" nz-input [(ngModel)]="params.note"></textarea>
+</ng-template>

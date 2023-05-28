@@ -1,0 +1,102 @@
+<nz-row class="mt-3 text-center">
+  <div nz-col [nzSpan]="6">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="dataSearch.dateFrom" name="dateFrom" [nzAllowClear]="false"
+          nzPlaceHolder="Từ ngày">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col [nzSpan]="6" class="ml-3">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="dataSearch.dateTo" name="dateTo" nzPlaceHolder="Đến ngày"
+          [nzAllowClear]="false">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col [nzSpan]="6" class="ml-2">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.customerId" name="customerId"
+          nzPlaceHolder="chọn khách hàng">
+          <nz-option *ngFor="let item of lstCustomer " [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <button nz-button nzType="primary" nzShape="round" (click)="searchData()" nz-tooltip nzTooltipTitle="Tìm kiếm"
+    class="mr-2 ml-2">
+    <i nz-icon nzType="search" nzTheme="outline"></i>
+    Tìm kiếm
+  </button>
+</nz-row>
+
+<nz-row nzGutter="6" class="wrapperBox">
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-yellowgreen ">
+      <div class="inner">
+        <h3>{{ ( dataObject.totalOrder ? dataObject.totalOrder : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tổng Order</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="ordered-list" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-violet">
+      <div class="inner">
+        <h3>{{ ( dataObjectContType.totalContType ? dataObjectContType.totalContType : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tổng Cont</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="unordered-list" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-teal">
+      <div class="inner">
+        <h3>{{ ( dataObjectOpsTrip.totalOpsTrip ? dataObjectOpsTrip.totalOpsTrip : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tổng Chuyến</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="alert" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+</nz-row>
+
+
+<nz-row nzGutter="24" class="mt-3">
+  <nz-col nzSpan="12">
+    <nz-card style="min-width:100%;" nzTitle="{{  'Biểu đồ dịch vụ Order' }}">
+      <div id="chartOrder" #chartOrder style="width: auto; height: 350px" class="mr-3" class="mt-3"></div>
+    </nz-card>
+  </nz-col>
+  <nz-col nzSpan="12">
+    <nz-card style="min-width:100%;" nzTitle="{{  'Biểu đồ trạng thái Order' }}">
+      <div id="chartOrderStatus" #chartOrderStatus style="width: auto; height: 350px" class="mr-3" class="mt-3"></div>
+    </nz-card>
+  </nz-col>
+</nz-row>
+
+
+<nz-row nzGutter="24" class="mt-3">
+  <nz-col nzSpan="12">
+    <nz-card style="min-width:100%;" nzTitle="{{  'Biểu đồ Cont' }}">
+      <div id="chartCont" #chartCont style="width: auto; height: 350px" class="mr-3" class="mt-3"></div>
+    </nz-card>
+  </nz-col>
+  <nz-col nzSpan="12">
+    <nz-card style="min-width:100%;" nzTitle="{{  'Biểu đồ Chuyến' }}">
+      <div id="chartTrip" #chartTrip style="width: auto; height: 350px" class="mr-3" class="mt-3"></div>
+    </nz-card>
+  </nz-col>
+</nz-row>

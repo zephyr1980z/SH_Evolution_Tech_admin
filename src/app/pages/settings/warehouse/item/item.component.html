@@ -1,0 +1,179 @@
+<nz-collapse nzBordered="false" nzOpen class="mb-2">
+  <nz-collapse-panel nzHeader="Tìm kiếm" [nzActive]="true">
+    <nz-row [nzGutter]="8">
+      <nz-col [nzSpan]="4">
+        <input nz-input [(ngModel)]="dataSearch.code" name="code" placeholder="Lọc mã" />
+      </nz-col>
+      <nz-col [nzSpan]="4">
+        <input nz-input [(ngModel)]="dataSearch.name" name="name" placeholder="Lọc tên" />
+      </nz-col>
+      <nz-col [nzSpan]="4">
+        <input class="text-left" nz-input [(ngModel)]="dataSearch.importPrice" name="importPrice"
+          placeholder="Lọc giá nhập trung bình" currencyMask />
+      </nz-col>
+
+      <nz-select nz-col [nzSpan]="4" nzShowSearch nzAllowClear nzPlaceHolder="Chọn nhóm phụ tùng"
+        [(ngModel)]="dataSearch.itemGroupId" name="itemGroupId">
+        <nz-option *ngFor="let item of lstItemGroup" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+      </nz-select>
+      <nz-select nz-col [nzSpan]="4" nzShowSearch nzAllowClear [(ngModel)]="dataSearch.safetyStockLevel"
+        name="safetyStockLevel" nzPlaceHolder="Chọn mức tồn kho">
+        <nz-option *ngFor="let item of safetyStockLevel" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+      </nz-select>
+      <nz-select nz-col [nzSpan]="4" nzShowSearch nzAllowClear [(ngModel)]="dataSearch.statusId" name="statusId"
+        nzPlaceHolder="Chọn trạng thái">
+        <nz-option *ngFor="let item of dataFilterStatus" [nzLabel]="item.name" [nzValue]="item.value"></nz-option>
+      </nz-select>
+    </nz-row>
+    <nz-row class="mt-2" nzJustify="center">
+      <nz-col nzSpan="2">
+        <button nz-button nzType="primary" nzShape="round" (click)="searchData(true)">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-row class="mb-2">
+  <button class="mr-2" nz-button nzType="primary" nzShape="round" (click)="clickAdd()"
+    *ngIf="coreService.checkPermission(enumRole.Add.code)">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm mới
+  </button>
+  <button class="mr-2" nzShape="round" nz-button (click)="clickDownloadTemplateExcel()" nzType="default"><i nz-icon
+      nzType="download" nzTheme="outline"></i>Tải Template Excel</button>
+  <input class="hidden" type="file" id="file" (change)="clickImportExcel($event)" placeholder="Upload file"
+    accept=".csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+  <label nz-button nzShape="round" for="file" class="lable-custom-file"
+    *ngIf="coreService.checkPermission(enumRole.Import_Excel.code)">
+    <i nz-icon nzType="upload"></i> Nhập Excel
+  </label>
+  <button nz-button nzType="primary" class="mr-2 ml-3" (click)="onDownloadExcel()" nzShape="round"
+    *ngIf="coreService.checkPermission(enumRole.Export_Excel.code)">
+    <i nz-icon nzType="download" nzTheme="outline"></i> Tải Excel
+  </button>
+  <!-- <button nz-button class="mr-2" nzType="primary" [disabled]="setOfCheckedId.size < 1" nzShape="round"
+    (click)="printList()">
+    <i nz-icon nzType="printer" nzTheme="outline"></i>In mã Barcode
+  </button> -->
+</nz-row>
+<div nz-row>
+  <nz-table nz-col nzSpan="24" class="mb-3" #ajaxTable [nzData]="listOfData" [(nzPageSize)]="pageSize"
+    [nzLoading]="loading" [nzShowPagination]="false" nzBordered nzTemplateMode>
+    <thead>
+      <tr>
+        <!-- <th nzWidth="30px" nzLeft column-check [nzChecked]="checked" [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)">
+        </th> -->
+        <th class="text-center">Mã phụ tùng</th>
+        <th class="text-center">Tên phụ tùng</th>
+        <th class="text-center">Nhóm phụ tùng</th>
+        <th class="text-center">Số lượng tổng</th>
+        <th class="text-center">Mức tồn kho an toàn</th>
+        <th class="text-center">Đơn vị cơ sở</th>
+        <th class="text-center">Giá nhập trung bình</th>
+        <th class="text-center">Trạng thái</th>
+        <th class="text-center">Tuỳ chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data"
+        [ngStyle]="{'background-color': (data.quantity < data.safetyStockQuantity)  ? ' #ffc83d' : null } ">
+        <!-- <td nzLeft class="column-check" [nzChecked]="setOfCheckedId.has(data)"
+          (nzCheckedChange)="onItemChecked(data, $event)">
+        </td> -->
+        <td (click)="clickDetail(data)">{{ data.code }}</td>
+        <td (click)="clickDetail(data)" class="mw-25">{{ data.name }}</td>
+        <td (click)="clickDetail(data)" class="mw-25">{{ data.itemGroupName }}</td>
+        <td (click)="clickDetail(data)" class="mw-25 text-right">{{ data.quantity | number: '1.0-2'}}</td>
+        <td (click)="clickDetail(data)" class="mw-25 text-right">{{ data.safetyStockQuantity | number: '1.0-2'}}</td>
+        <td (click)="clickDetail(data)" class="mw-25">{{ data.baseUnitName }}</td>
+        <td (click)="clickDetail(data)" class="mw-25 text-right">{{ data.importPrice | number: '1.0-2'}}</td>
+        <td (click)="clickDetail(data)" class="mw-25 text-center">
+          <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">Không hoạt động</nz-tag>
+          <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+        </td>
+        <td class="text-nowrap">
+          <button *ngIf="coreService.checkPermission(enumRole.Update.code)" (click)="clickEdit(data)" nz-tooltip
+            nzTooltipTitle="Chỉnh sửa" nz-button nzType="primary" nzShape="circle" class="mr-2">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+          <button *ngIf="data.isDeleted && coreService.checkPermission(enumRole.Update.code)" nz-popconfirm
+            nzPopconfirmTitle="Bạn có chắc muốn hoạt động lại?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="setActiveItem(data)" nz-tooltip nzTooltipTitle="Ngưng hoạt động" nz-button nzDanger
+            nzType="primary" nzShape="circle" class="mr-2">
+            <i nz-icon nzType="stop" nzTheme="outline"></i>
+          </button>
+          <button *ngIf="!data.isDeleted && coreService.checkPermission(enumRole.Update.code)" nz-popconfirm
+            nzPopconfirmTitle="Bạn có chắc muốn ngưng hoạt động?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="setActiveItem(data)" nz-tooltip nzTooltipTitle="Đang hoạt động" nz-button nzType="primary"
+            nzShape="circle" class="mr-2">
+            <i nz-icon nzType="play-circle"></i>
+          </button>
+          <button (click)="clickPrint(data)" nz-tooltip nzTooltipTitle="In mã Barcode" nz-button nzType="primary"
+            nzShape="circle" class="mr-2">
+            <span nz-icon nzType="printer" nzTheme="outline"></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+    (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+    nzShowSizeChanger>
+  </nz-pagination>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Dòng {{ range[0] }} tới {{ range[1] }} trong tổng số {{ total }} dòng
+  </ng-template>
+</div>
+
+<nz-modal [(nzVisible)]="isVisiblePrint" nzTitle="Số lượng mã Barcode muốn in" (nzOnCancel)="handleCancel()">
+  <ng-container *nzModalContent>
+    <div nz-row style="display: flex;">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Nhập số lượng
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng !">
+            <input type="number" nz-input [(ngModel)]="dataObject.printQuantity">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </ng-container>
+  <div *nzModalFooter>
+
+    <button [disabled]="dataObject.printQuantity < 1" class="ant-btn-danger" nzShape="round" nzType="primary"
+      (click)="onPrintPayment()" nz-button>
+      <i nz-icon nzType="delete" nzTheme="outline"></i> In mã Barcode
+    </button>
+    <button nzShape="round" (click)="handleCancel()" nz-button>
+      <i nz-icon nzType="close" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</nz-modal>
+
+<!-- <nz-modal [(nzVisible)]="isVisiblePrintItem" nzTitle="Số lượng mã Barcode muốn in" (nzOnCancel)="handleCancel()">
+  <ng-container *nzModalContent>
+    <div nz-row style="display: flex;">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Nhập số lượng
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng !">
+            <input type="number" nz-input [(ngModel)]="dataObject.printQuantity">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </ng-container>
+  <div *nzModalFooter>
+    <button [disabled]="dataObject.printQuantity < 1" class="ant-btn-blue" nzShape="round" nzType="primary"
+      (click)="onPrintOneItem()" nz-button>
+      <i nz-icon nzType="printer" nzTheme="outline"></i> In mã Barcode
+    </button>
+    <button nzShape="round" (click)="handleCancel()" nz-button>
+      <i nz-icon nzType="close" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</nz-modal> -->

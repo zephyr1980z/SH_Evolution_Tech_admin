@@ -1,0 +1,193 @@
+<nz-row class="mt-3 text-center">
+  <div nz-col [nzSpan]="6">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <nz-date-picker nzMode="month" [nzShowTime]="false" nzFormat="MM/yyyy" [(ngModel)]="dataSearch.date" name="date"
+          nzPlaceHolder="Chọn Tháng">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col [nzSpan]="6" class="ml-2">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <input nz-input [(ngModel)]="dataSearch.code" name="name" placeholder="Mã tài xế" />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <button nz-button nzType="primary" nzShape="round" (click)="searchData()" nz-tooltip nzTooltipTitle="Tìm kiếm"
+    class="mr-2 ml-2">
+    <i nz-icon nzType="search" nzTheme="outline"></i>
+    Tìm kiếm
+  </button>
+</nz-row>
+
+<nz-row nzGutter="6" class="wrapperBox" *ngIf="dataObject">
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <div class="small-box bg-success">
+      <div class="inner">
+        <h3>{{ ( dataObject.totalSalaryTour ? dataObject.totalSalaryTour : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tổng lương tour</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="dollar" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <div class="small-box bg-black">
+      <div class="inner">
+        <h3>{{ ( dataObject.reciprocalMoneyPayslip ? dataObject.reciprocalMoneyPayslip : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tiền ứng</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="dollar" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <div class="small-box bg-info">
+      <div class="inner">
+        <h3>{{ ( dataObject.amountRefunded ? dataObject.amountRefunded : 0 ) | number: '1.0-2' }}</h3>
+        <p>Hoàn ứng</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="dollar" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <div class="small-box bg-danger">
+      <div class="inner">
+        <h3>{{ ( dataObject.negativeMoneyRice ? dataObject.negativeMoneyRice : 0 ) | number: '1.0-2' }}</h3>
+        <p>Âm cơm</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="dollar" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <div class="small-box bg-box">
+      <div class="inner">
+        <h3>{{ ( dataObject.negativeMoney ? dataObject.negativeMoney : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tài xế âm</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="dollar" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <div class="small-box bg-secondary">
+      <div class="inner">
+        <h3>{{ ( dataObject.salaryAdvance ? dataObject.salaryAdvance : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tổng tài xế ứng</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="dollar" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <div class="small-box bg-cornflowerblue">
+      <div class="inner">
+        <h3>{{ ( dataObject.moneyRest ? dataObject.moneyRest : 0 ) | number: '1.0-2' }}</h3>
+        <p>Trả lại tài xế</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="dollar" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+</nz-row>
+
+<nz-row class="mt-3">
+  <nz-col nzSpan="24" class="text-center">
+    <h3><b style="text-transform: uppercase ;">Tổng chi phí</b></h3>
+  </nz-col>
+</nz-row>
+<nz-row nzGutter="6" class="wrapperBox" *ngIf="dataObject">
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-yellowgreen ">
+      <div class="inner">
+        <h3>{{ ( dataObjectCost.total ? dataObjectCost.total : 0 ) | number: '1.0-2' }}</h3>
+        <p>Bồi dưỡng nâng hạ, vá vỏ, khác</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="account-book" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-violet">
+      <div class="inner">
+        <h3>{{ ( dataObjectCost.bridges ? dataObjectCost.bridges : 0 ) | number: '1.0-2' }}</h3>
+        <p>Cầu đường</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="branches" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-teal">
+      <div class="inner">
+        <h3>{{ ( dataObjectCost.cargoHandling ? dataObjectCost.cargoHandling : 0 ) | number: '1.0-2' }}</h3>
+        <p>Bốc xếp</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="alert" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+</nz-row>
+
+
+<nz-row class="mt-3">
+  <nz-col nzSpan="24" class="text-center">
+    <h3><b style="text-transform: uppercase ;">Tổng dầu</b></h3>
+  </nz-col>
+</nz-row>
+<nz-row nzGutter="6" class="wrapperBox" *ngIf="dataObject">
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-blueviolet ">
+      <div class="inner">
+        <h3>{{ ( dataObjectCost.oilDistance ? dataObjectCost.oilDistance : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tổng dầu cự ly</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="setting" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-tan">
+      <div class="inner">
+        <h3>{{ ( dataObjectCost.oilActual ? dataObjectCost.oilActual : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tổng dầu thực tế</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="delivered-procedure" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-firebrick">
+      <div class="inner">
+        <h3>{{ ( dataObjectCost.difference ? dataObjectCost.difference : 0 ) | number: '1.0-2' }}</h3>
+        <p>Chênh lệch</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="sort-ascending" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+</nz-row>

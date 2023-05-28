@@ -1,0 +1,97 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Số bằng lái </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số bằng lái (1-250 kí tự)!">
+          <input nz-input placeholder="Nhập mã Tài xế (1-250 kí tự)" [(ngModel)]="dataObject.licenseNo" name="licenseNo"
+            numbersOnly required pattern=".{1,250}" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Loại bằng lái </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.licenseTypeId" name="licenseTypeId"
+            nzPlaceHolder="Chọn loại bằng lái">
+            <nz-option *ngFor="let item of dataLicenseType" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Tài xế </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.driverId" name="driverId"
+            nzPlaceHolder="Chọn tài xế">
+            <nz-option *ngFor="let item of dataDriver" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="12">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ngày hiệu lực bằng lái </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-date-picker [(ngModel)]="dataObject.effectDate" nzPlaceHolder="Chọn ngày hiệu lực bằng lái"
+            name="effectDate" nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="12">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ngày hết hạn bằng lái </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <nz-date-picker [(ngModel)]="dataObject.expireDate" nzPlaceHolder="Chọn ngày sinh Tài xế" name="expireDate"
+            nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ghi chú </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <textarea rows="4" nz-input placeholder="Nhập ghi chú" [(ngModel)]="dataObject.note" pattern=".{0,500}"
+            name="note"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-upload nzListType="picture-card" [(nzFileList)]="dataObject.fileList" [nzAction]="urlAction"
+    [nzPreview]="handlePreview" [nzMultiple]="true" (nzChange)="handleChange($event)">
+    <div>
+      <i nz-icon nzType="plus"></i>
+      <div style="margin-top: 8px">Upload</div>
+    </div>
+  </nz-upload>
+
+  <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+    (nzOnCancel)="previewVisible = false">
+    <ng-template #modalContent>
+      <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+    </ng-template>
+  </nz-modal>
+
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" nz-button nzType="primary" (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

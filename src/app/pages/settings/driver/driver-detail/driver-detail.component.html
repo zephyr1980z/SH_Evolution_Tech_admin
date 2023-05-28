@@ -1,0 +1,110 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">THÔNG TIN TÀI XẾ {{ data.name | uppercase }}</span>
+  <br />
+</div>
+
+<nz-tabset *ngIf="data" class="mt-4">
+  <nz-tab nzTitle="Thông Tin Chung">
+    <div nz-row nzGutter="6">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã Tài Xế</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ data.code }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên Tài Xế</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ data.name }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tài Khoản</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ data.userName }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Email</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ data.email }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa Chỉ</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ data.address }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">SĐT</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ data.numberPhone }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Số CMND / CCCD</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ data.cardNumber }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ngày Sinh</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ data.dob | date: 'dd/MM/yyyy'}} </b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Biển số đầu kéo</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{data.vehicleRegNo}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Biển số rơ moóc</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{data.romoocRegNo}}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Trạng thái</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+              <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">Không hoạt động</nz-tag>
+              <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+            </nz-form-control>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+  </nz-tab>
+</nz-tabset>
+<div nz-row class="mt-3">
+  <div nz-col [nzSpan]="24" class="text-center">
+    <button nz-button nzShape="round" nzType="default" class="mr-3" (click)="closeDialog(0)">
+      <i nz-icon nzType="lock" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</div>

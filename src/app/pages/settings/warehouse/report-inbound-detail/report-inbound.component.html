@@ -1,0 +1,115 @@
+<nz-collapse nzBordered="false" nzOpen class="mb-2">
+  <nz-collapse-panel nzHeader="Tìm kiếm nâng cao" [nzActive]="true">
+    <nz-row nzGutter="8">
+      <!-- <div nz-col [nzSpan]="8">
+        <input nz-input [(ngModel)]="dataSearch.code" name="code" placeholder="Lọc mã lô" />
+      </div> -->
+      <div nz-col [nzSpan]="12">
+        <input nz-input [(ngModel)]="dataSearch.itemName" name="itemName" placeholder="Lọc tên phụ tùng" />
+      </div>
+      <div nz-col [nzSpan]="12">
+        <input nz-input [(ngModel)]="dataSearch.itemCode" name="itemCode" placeholder="Lọc mã phụ tùng" />
+      </div>
+      <!-- <nz-select nz-col [nzSpan]="8" nzShowSearch nzAllowClear [(ngModel)]="dataSearch.status" name="status"
+        nzPlaceHolder="Chọn trạng thái">
+        <nz-option *ngFor="let item of inDetailStatus" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+      </nz-select> -->
+
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Loại</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-select nz-col nzShowSearch nzAllowClear [(ngModel)]="dataSearch.type" name="type"
+              nzPlaceHolder="Chọn loại" (ngModelChange)="onChangeFilter($event)">
+              <nz-option *ngFor="let item of listFilter" [nzLabel]="item.name" [nzValue]="item.code">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="8" *ngIf="dataSearch.type === enumMonth">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Chọn thời gian nhập</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-month-picker [(ngModel)]="dataSearch.dateFrom" nzPlaceHolder="Chọn thời gian">
+            </nz-month-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8" *ngIf="dataSearch.type === enumQuarterly">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Thời gian</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-year-picker [(ngModel)]="dataSearch.quarterly" (ngModelChange)="onChangeQuarterly($event)"
+              nzPlaceHolder="Chọn năm">
+            </nz-year-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8" *ngIf="dataSearch.type === enumQuarterly">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Chọn quý</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn quý">
+            <nz-select nz-col nzShowSearch nzAllowClear [(ngModel)]="dataSearch.quarterlyId" name="quarterlyId"
+              nzPlaceHolder="Chọn quý">
+              <nz-option *ngFor="let item of dataQuarterly" [nzLabel]="item.name" [nzValue]="item.code">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8" *ngIf="dataSearch.type === enumYear">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Chọn thời gian</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-year-picker [(ngModel)]="dataSearch.dateFrom" nzPlaceHolder="Chọn năm">
+            </nz-year-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <nz-col nzSpan="24" class="text-center mt-2">
+        <button nz-button nzType="primary" nzShape="round" (click)="searchData(true)" class="mr-2">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+        </button>
+        <button *ngIf="coreService.checkPermission(enumRole.Export_Excel.code)" nz-button nzType="default"
+          (click)="onDownloadExcel()" nzShape="round" class="mr-2">
+          <i nz-icon nzType="download" nzTheme="outline"></i> Tải Excel
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-row>
+  <nz-table nz-col nzSpan="24" class="mb-3" #ajaxTable [nzData]="listOfData" [(nzPageSize)]="pageSize"
+    [nzLoading]="loading" [nzShowPagination]="false" nzBordered nzTemplateMode>
+    <thead>
+      <tr>
+        <th class="text-center"> Mã phụ tùng</th>
+        <th class="text-center"> Tên phụ tùng</th>
+        <th class="text-center"> Sl nhập ban đầu</th>
+        <th class="text-center"> Sl nhập còn lại</th>
+        <th class="text-center"> Giá nhập</th>
+        <th class="text-center"> Ngày nhập</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="mw-25 text-center">{{data.itemCode}}</td>
+        <td class="mw-25 text-center">{{data.itemName}}</td>
+        <td class="mw-25 text-center">{{data?.ibDetailQuantity}}</td>
+        <td class="mw-25 text-center">{{data.quantity}}</td>
+        <td class="mw-25 text-center">{{data.importPrice | number}}</td>
+        <td class="mw-25 text-center">{{data?.updatedAt | date: 'dd/MM/yyyy'}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+    (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+    nzShowSizeChanger>
+  </nz-pagination>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Dòng {{ range[0] }} tới {{ range[1] }} trong tổng số {{ total }} dòng
+  </ng-template>
+</nz-row>

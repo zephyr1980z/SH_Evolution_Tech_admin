@@ -1,0 +1,121 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+
+
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="6">
+    <nz-col nzSpan="24">
+      <nz-col nzSpan="24">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loại Dịch Vụ</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn loại dịch vụ!">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn loại dịch vụ" [(ngModel)]="dataObject.serviceType"
+              name="serviceType" required (ngModelChange)="onChangeServiceType($event)">
+              <nz-option *ngFor="let item of lstServiceType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Hàng Hóa</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn hàng hóa!">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn loại hàng hóa" [(ngModel)]="dataObject.productId"
+            name="productId" required>
+            <nz-option *ngFor="let item of lstProduct" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Khu vực</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn khu vực!">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn khu vực" [(ngModel)]="dataObject.areaId"
+            name="areaId" required [disabled]="dataObject.locationId">
+            <nz-option *ngFor="let item of lstArea" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Địa điểm</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn địa điểm!">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn địa điểm" [(ngModel)]="dataObject.locationId"
+            name="locationId" required [disabled]="dataObject.areaId">
+            <nz-option *ngFor="let item of lstLocation" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <!-- <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loại Container</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn loại container!">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn loại container" [(ngModel)]="dataObject.contTypeId"
+            name="type" required (ngModelChange)="onChangeContType()">
+            <nz-option *ngFor="let item of lstContType" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col> -->
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loại Container</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn loại container!">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn loại container" [(ngModel)]="dataObject.codeContType"
+            name="type" required (ngModelChange)="onChangeContType()">
+            <nz-option *ngFor="let item of lstCodeContType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Số lượng</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input placeholder="Vui lòng nhập số lượng Cont" [(ngModel)]="dataObject.quantity" name="quantity"
+            required />
+          <span style="color: red;">Loại (Cont20) nhập số lượng 1 hoặc 2. Loại (Cont40) nhập số lượng 1!</span>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <!-- <nz-col nzSpan="24" *ngIf="dataObject.serviceType != enumData.ServiceType.ChuyenKho.code">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Kiểu Lấy Hàng</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn loại kiểu lấy hàng!">
+          <nz-select [nzDisabled]="!dataObject.serviceType" nzShowSearch nzAllowClear nzPlaceHolder="Chọn kiểu lấy hàng"
+            [(ngModel)]="dataObject.pickupType" name="pickupType">
+            <nz-option *ngFor="let item of lstPickupType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col> -->
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Đơn Giá</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập đơn giá!">
+          <input nz-input placeholder="Nhập đơn giá" [(ngModel)]="dataObject.unitPrice" name="unitPrice"
+            pattern="^([.0-9]){1,250}$" required />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Số Cộng Thêm</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập số cộng thêm!">
+          <input nz-input placeholder="Nhập số cộng thêm" [(ngModel)]="dataObject.plusNumber" name="plusNumber"
+            pattern="^([.0-9]){1,250}$" required />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </div>
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" nz-button nzType="primary" class="mr-3" [disabled]="!frmAdd.form.valid"
+        (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

@@ -1,0 +1,97 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-row nzGutter="4">
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loại địa điểm đi</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập địa điểm (1-50 kí tự)!">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.typeFrom" name="typeFrom"
+            nzPlaceHolder="Chọn loại địa điểm">
+            <nz-option *ngFor="let data of LocationType" [nzLabel]="data.name" [nzValue]="data.code">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Khu vực đi</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn địa khu vực">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn khu vực" [(ngModel)]="dataObject.fromAreaId"
+            name="fromAreaId" required [disabled]="dataObject.fromLocationId">
+            <nz-option *ngFor="let item of lstArea" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Địa điểm đi</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn địa điểm đi">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn địa điểm đi" [(ngModel)]="dataObject.fromLocationId"
+            name="fromLocationId" required [disabled]="dataObject.fromAreaId">
+            <nz-option *ngFor="let item of lstLocation" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loại địa điểm đến</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập địa điểm đến (1-50 kí tự)!">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.typeTo" name="typeTo"
+            nzPlaceHolder="Chọn loại địa điểm đến">
+            <nz-option *ngFor="let item of LocationType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Khu vực đến</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn khu vực đến">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn khu vực" [(ngModel)]="dataObject.toAreaId"
+            name="toAreaId" required [disabled]="dataObject.toLocationId">
+            <nz-option *ngFor="let item of lstArea" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Địa điểm đến</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn địa điểm đến">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn địa điểm đến" [(ngModel)]="dataObject.toLocationId"
+            name="toLocationId" required [disabled]="dataObject.toAreaId">
+            <nz-option *ngFor="let item of lstLocation" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Cự ly</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập cự ly">
+          <input nz-input placeholder="Nhập cự ly" [(ngModel)]="dataObject.distance" name="distance" pattern=".{1,50}"
+            autocomplete="off" required />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" nz-button [disabled]="!frmAdd.form.valid" nzType="primary" (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

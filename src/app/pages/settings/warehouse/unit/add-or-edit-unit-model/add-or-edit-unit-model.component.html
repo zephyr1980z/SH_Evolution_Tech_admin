@@ -1,0 +1,41 @@
+<div class="mb-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Mã đơn vị tính</nz-form-label>
+        <nz-form-control [nzSm]="12" [nzXs]="24"
+          nzErrorTip="Vui lòng nhập mã đơn vị tính (1-250 kí tự và không kèm ký tự đặc biệt hoặc khoảng trắng)!">
+          <input nz-input placeholder="Nhập mã 1-250 kí tự" [disabled]="isEditItem" [(ngModel)]="dataObject.code"
+            name="code" required pattern="^([a-zA-Z0-9]){1,250}$" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Tên đơn vị tính</nz-form-label>
+        <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Vui lòng nhập tên đơn vị tính (1-250 kí tự)!">
+          <input nz-input placeholder="Nhập tên 1-250 kí tự" [(ngModel)]="dataObject.name" name="name" required
+            pattern=".{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Mô tả</nz-form-label>
+        <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Vui lòng nhập mô tả!">
+          <input nz-input placeholder="Nhập mô tả" [(ngModel)]="dataObject.description" name="description" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col [nzSpan]="24" class="text-center">
+      <button nzShape="round" nz-button [disabled]="!frmAdd.form.valid" nzType="primary" class="mr-3"
+        (click)="onSave()">Lưu</button>
+    </div>
+  </div>
+</form>

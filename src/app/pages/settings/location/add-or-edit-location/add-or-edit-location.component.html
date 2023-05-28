@@ -1,0 +1,132 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Mã địa điểm</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập mã địa điểm (1-250 kí tự)!">
+          <input nz-input [disabled]="isEditItem" placeholder="Nhập mã địa điểm" [(ngModel)]="dataObject.code"
+            name="code" required pattern=".{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Tên địa điểm</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập tên địa điểm (1-250 kí tự)!">
+          <input nz-input placeholder="Nhập tên địa điểm" [(ngModel)]="dataObject.name" name="name" required
+            pattern=".{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Địa chỉ</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập địa chỉ (1-500 kí tự)!">
+          <input nz-input placeholder="Nhập địa chỉ" [(ngModel)]="dataObject.address" name="address" required
+            pattern=".{1,500}" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Vĩ tuyến</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập địa chỉ (1-500 kí tự)!">
+          <input nz-input placeholder="Nhập vĩ tuyến" [(ngModel)]="dataObject.lat" name="lat" pattern=".{1,500}" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Kinh tuyến</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập địa chỉ (1-500 kí tự)!">
+          <input nz-input placeholder="Nhập kinh tuyến" [(ngModel)]="dataObject.lng" name="lng" pattern=".{1,500}" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loại địa điểm</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng nhập địa điểm (1-50 kí tự)!">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.type" name="type"
+            nzPlaceHolder="Chọn loại địa điểm" required>
+            <nz-option *ngFor="let item of dataLocationType" [nzLabel]="item.name" [nzValue]="item.code"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loại cảng</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Vui lòng chọn loại cảng(1-50 kí tự)!">
+          <nz-select [disabled]="dataObject.type !== 'Port'" nzShowSearch nzAllowClear [(ngModel)]="dataObject.areaId"
+            name="area" nzPlaceHolder="Chọn loại cảng" required>
+            <nz-option *ngFor="let item of dataPortArea" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Chọn Tỉnh Thành</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.cityId" (ngModelChange)="handleCitySearch()"
+            name="cityId" nzPlaceHolder="Chọn Tỉnh / Thành">
+            <nz-option *ngFor="let item of dataCity" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Chọn Quận Huyện</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.districtId"
+            (ngModelChange)="handleDistrictSearch()" name="districtId" nzPlaceHolder="Chọn Quận / Huyện"
+            [nzDisabled]="!dataObject.cityId">
+            <ng-container *ngFor="let item of dataDistrict">
+              <nz-option *ngIf="!isLoadingDistrict" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoadingDistrict" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              Loading Data...
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Chọn Phường Xã</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.wardId" name="wardId"
+            nzPlaceHolder="Chọn Phường / Xã" [nzDisabled]="!dataObject.districtId ">
+            <ng-container *ngFor="let item of dataWard">
+              <nz-option *ngIf="!isLoadingWard" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            </ng-container>
+            <nz-option *ngIf="isLoadingWard" nzDisabled nzCustomContent>
+              <i nz-icon nzType="loading" class="loading-icon"></i>
+              Loading Data...
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col nzSpan="24" align="center">
+      <button nzShape="round" nz-button nzType="primary" class="mr-3" [disabled]="!frmAdd.form.valid"
+        (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

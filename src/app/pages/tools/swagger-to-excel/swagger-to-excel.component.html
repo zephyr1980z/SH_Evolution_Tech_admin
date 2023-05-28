@@ -1,0 +1,10 @@
+<nz-row nzJustify="center" nzAlign="top">
+
+  <nz-col nzSpan="6">
+    <input nz-input placeholder="Link swagger" [(ngModel)]="dataFormInput.link" [defaultValue]="DEFAULT_LINK"
+      placeholder="Link swagger" />
+  </nz-col>
+  <button nz-button nzType="primary" class="mr-3 ml-3" (click)="onDownLoadExcel()" nzShape="round">
+    <i nz-icon nzType="download" nzTheme="outline"></i> Tải Excel
+  </button>
+</nz-row>

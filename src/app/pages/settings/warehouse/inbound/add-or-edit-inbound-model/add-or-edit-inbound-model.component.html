@@ -1,0 +1,348 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="12">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Mã đơn nhập kho</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24"
+          nzErrorTip="Vui lòng nhập mã đơn (1-250 kí tự và không kèm ký tự đặc biệt hoặc khoảng trắng)!">
+          <input nz-input placeholder="Nhập mã 1-250 kí tự" [disabled]="isEditItem" [(ngModel)]="dataObject.code"
+            name="code" required pattern="^([a-zA-Z0-9]){1,250}$" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Tên đơn nhập kho</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập tên đơn nhập kho!">
+          <input nz-input placeholder="Nhập tên 1-250 kí tự" [(ngModel)]="dataObject.name" name="name" required
+            pattern="{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Nhà cung cấp</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn nhà cung cấp!">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nhà cung cấp" [(ngModel)]="dataObject.supplierId"
+            name="supplierId" (ngModelChange)="onChangeItemSupplier($event)" [disabled]="isEditItem">
+            <nz-option *ngFor="let item of lstItemSupplier" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Mô Tả</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mô tả!">
+          <input nz-input placeholder="Nhập mô tả" [(ngModel)]="dataObject.description" name="description" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+
+  <form nz-form nz-row nz-col nzSpan="24" class="ant-advanced-search-form" #frmAdd3="ngForm">
+    <ng-container>
+      <nz-collapse nz-col nzSpan="24" [nzBordered]="true" class="mt-2 mb-2">
+        <nz-collapse-panel nzHeader=" Danh sách phụ tùng" nzActive=" true" class="ant-bg-antiquewhite">
+          <div nz-row [nzGutter]="12">
+
+            <nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Tên Phụ Tùng</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng  chọn tên phụ tùng!">
+                  <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn tên phụ tùng" [(ngModel)]="dataChoose.itemId"
+                    name="itemId" required (ngModelChange)="onChangeItem($event)">
+                    <nz-option *ngFor="let item of lstItem" [nzLabel]="item.name + ' (' + item.code + ')'"
+                      [nzValue]="item.id"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <nz-col [nzSpan]="8">
+              <nz-form-item nzFlex *ngIf="dataChoose.itemId">
+                <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Đơn vị</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn đơn vị!">
+                  <nz-radio-group [(ngModel)]="radioValue" name="radioValue" required>
+                    <label nz-radio nzValue="B">Đơn vị: {{dataChoose.unitName}} = {{dataChoose.specQuantity}}</label>
+                    <label nz-radio nzValue="A">Đơn vị cơ sở: {{dataChoose.baseUnitName}}</label>
+                  </nz-radio-group>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ngày Sản Xuất</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn ngày sản xuất">
+                  <nz-date-picker nzPlaceHolder="Chọn ngày sản xuất" [(ngModel)]="dataChoose.manufactureDate"
+                    name="manufactureDate" nzFormat="dd-MM-yyyy">
+                  </nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Hạn Sử Dụng</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn ngày hết hạn sử dụng!">
+                  <nz-date-picker [(ngModel)]="dataChoose.expiryDate" nzPlaceHolder="Chọn hạn sử dụng" name="expiryDate"
+                    nzFormat="dd-MM-yyyy">
+                  </nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Số Lượng nhập dự kiến
+                </nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng nhập dự kiến!">
+                  <input nz-input placeholder="Nhập số lượng" [(ngModel)]="dataChoose.estimatedQuantity"
+                    name="estimatedQuantity" autocomplete="off" required pattern="^([.0-9]){1,250}$" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Số Lượng nhập thực</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng nhập thực!">
+                  <input nz-input placeholder="Nhập số lượng" [(ngModel)]="dataChoose.quantity" name="quantity"
+                    autocomplete="off" pattern="^([.0-9]){1,250}$" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Giá nhập</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập giá!">
+                  <input nz-input placeholder="Nhập giá nhập" [(ngModel)]="dataChoose.importprice" name="importprice"
+                    autocomplete="off" required pattern="^([.0-9]){1,250}$" />
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+
+            <div nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Thành tiền dự kiến
+                </nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                  <span>{{((dataChoose?.importprice * dataChoose.estimatedQuantity) ? (dataChoose?.importprice *
+                    dataChoose.estimatedQuantity) : 0) | number: '1.0-2'}} VND</span>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col [nzSpan]="8">
+              <nz-form-item nzFlex>
+                <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Thành tiền
+                </nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24">
+                  <span>{{((dataChoose?.importprice * dataChoose.quantity) ? (dataChoose?.importprice *
+                    dataChoose.quantity) : 0) | number: '1.0-2'}} VND</span>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+
+          <div nz-row>
+            <div nz-col [nzSpan]="24" class="text-center">
+              <button nz-button [disabled]="!frmAdd3.form.valid" nzShape="round" nzType="primary" (click)="onAddItem()">
+                <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm phụ tùng vào danh sách nhập kho
+              </button>
+            </div>
+          </div>
+
+          <nz-table nz-col nzSpan="24" class="mt-2" [nzData]="dataObject.lstItem" [nzShowPagination]="false"
+            [nzFrontPagination]="false" nzTemplateMode [nzScroll]="{ x: '3000px', y: null }" nzTableLayout="fixed">
+            <thead>
+              <tr>
+                <th class="text-center" nzWidth="200px" nzLeft>STT</th>
+                <th class="text-center"> Tên phụ tùng</th>
+                <th class="text-center"> Số lượng nhập dự kiến</th>
+                <th class="text-center"> Số lượng nhập thực</th>
+                <th class="text-center"> Giá nhập</th>
+                <th class="text-center"> Thành tiền</th>
+                <th class="text-center"> Thành tiền dự kiến</th>
+                <th class="text-center"> Hạn sử dụng </th>
+                <th class="text-center"> Ngày sản xuất</th>
+                <th class="text-center"> Ngày nhập</th>
+                <th class="text-center"> Trạng thái</th>
+                <th nzWidth="200px" nzRight>Tùy Chọn</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataObject.lstItem ; let i=index ">
+                <td class="text-center" nzWidth="200px" nzLeft>{{i + 1}}</td>
+                <td class="text-center">{{item.itemName}}</td>
+                <td class="text-center">{{item.estimatedQuantity | number: '1.0-2'}}</td>
+                <td class="text-center">{{item.quantity | number: '1.0-2'}}</td>
+                <td class="text-center">{{item.importprice | number: '1.0-2'}}</td>
+                <td class="text-center">{{item?.quantity * item?.importprice| number: '1.0-2'}}</td>
+                <td class="text-center">{{item?.estimatedQuantity * item?.importprice| number: '1.0-2'}}</td>
+                <td class="text-center">{{item.expiryDate | date: 'dd/MM/yyyy '}}</td>
+                <td class="text-center">{{item.manufactureDate | date: 'dd/MM/yyyy '}}</td>
+                <td class="text-center">{{item.importDate | date: 'dd/MM/yyyy '}}</td>
+                <td class="text-center">{{coreService.getEnumElementName(enumData.Inbound_Detail, item?.status) ?
+                  coreService.getEnumElementName(enumData.Inbound_Detail, item?.status) :
+                  coreService.getEnumElementName(enumData.Inbound_Detail, 'MoiTao')}}</td>
+                <td nzWidth="200px" nzRight>
+                  <button nz-button nzType="primary" nzDanger nzShape="circle" nz-tooltip nzTooltipTitle="Xóa"
+                    nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn [XÓA]?" (nzOnConfirm)="onDelete(i)" class="mr-2">
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                  </button>
+                  <button *ngIf="item?.status == 'MoiTao' && !data?.isDeleted && isEditItem"
+                    (click)="clickEditInboundDetail(item)" nz-tooltip nzTooltipTitle="Chỉnh sửa Đơn nhập kho" nz-button
+                    nzType="primary" nzShape="circle" class="mr-2">
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+  </form>
+
+  <div nz-row>
+    <div nz-col [nzSpan]="24" class="text-center">
+      <button nzShape="round" nz-button [disabled]="!frmAdd.form.valid || dataObject.lstItem.length < 1"
+        nzType="primary" class="mr-3" (click)="onSave()">Lưu</button>
+    </div>
+  </div>
+
+</form>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Chỉnh sửa lô nhập kho" (nzOnCancel)="onCancelEditInbound()"
+  nzWidth="800px">
+  <ng-container *nzModalContent>
+    <div nz-row [nzGutter]="12">
+      <nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Mã lô phụ tùng</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24"
+            nzErrorTip="Vui lòng nhập mã từ 1 đến 250 kí tự và không kèm kí tự đặc biệt khoảng cách">
+            <input nz-input [(ngModel)]="inboundDetail.code" name="inboundDetail.code" [disabled]="isEditItem"
+              required />
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Tên Phụ Tùng</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng  chọn tên phụ tùng!">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn tên phụ tùng" [(ngModel)]="inboundDetail.itemId"
+              name="itemId" required (ngModelChange)="onChangeItem($event)">
+              <nz-option *ngFor="let item of lstItem" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Đơn vị
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <input nz-input [(ngModel)]="inboundDetail.baseUnitName" name="inboundDetail.baseUnitName"
+              autocomplete="off" readonly="readonly" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ngày Sản Xuất</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn ngày sản xuất">
+            <nz-date-picker nzPlaceHolder="Chọn ngày sản xuất" [(ngModel)]="inboundDetail.manufactureDate"
+              name="manufactureDate" nzFormat="dd-MM-yyyy">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+
+      <nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Hạn Sử Dụng</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn ngày hết hạn sử dụng!">
+            <nz-date-picker [(ngModel)]="inboundDetail.expiryDate" nzPlaceHolder="Chọn hạn sử dụng" name="expiryDate"
+              nzFormat="dd-MM-yyyy">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+
+      <nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Số Lượng nhập dự kiến
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng nhập dự kiến!">
+            <input nz-input placeholder="Nhập số lượng" [(ngModel)]="inboundDetail.estimatedQuantity"
+              name="estimatedQuantity" autocomplete="off" required pattern="^([.0-9]){1,250}$" />
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+
+      <nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Số Lượng nhập thực</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập số lượng nhập thực!">
+            <input nz-input placeholder="Nhập số lượng" [(ngModel)]="inboundDetail.quantity" name="quantity"
+              autocomplete="off" pattern="^([.0-9]){1,250}$" />
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+
+      <nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Giá nhập</nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập giá!">
+            <input nz-input placeholder="Nhập giá nhập" [(ngModel)]="inboundDetail.importprice" name="importprice"
+              autocomplete="off" required pattern="^([.0-9]){1,250}$" />
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Thành tiền dự kiến (Giá nhập * Số lượng nhập
+            dự kiến)
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <span>{{((inboundDetail?.importprice * inboundDetail.estimatedQuantity) ? (inboundDetail?.importprice *
+              inboundDetail.estimatedQuantity) : 0) | number: '1.0-2'}} VND</span>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="8">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Thành tiền (Giá nhập * Số lượng nhập thực)
+          </nz-form-label>
+          <nz-form-control [nzSm]="24" [nzXs]="24">
+            <span>{{((inboundDetail?.importprice * inboundDetail.quantity) ? (inboundDetail?.importprice *
+              inboundDetail.quantity) : 0) | number: '1.0-2'}} VND</span>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </ng-container>
+  <div *nzModalFooter>
+
+    <button nzShape="round" nzType="primary" (click)="onSaveInboundDetail(inboundDetail)" nz-button>
+      <span nz-icon nzType="save" nzTheme="outline"></span> Lưu lô nhập
+    </button>
+    <button nzShape="round" (click)="onCancelEditInbound()" nz-button>
+      <i nz-icon nzType="close" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</nz-modal>

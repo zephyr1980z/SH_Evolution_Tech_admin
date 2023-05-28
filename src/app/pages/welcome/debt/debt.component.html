@@ -1,0 +1,173 @@
+<nz-row class="mt-3 text-center">
+  <div nz-col [nzSpan]="6">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="dataSearch.dateFrom" name="dateFrom" [nzAllowClear]="false"
+          nzPlaceHolder="Từ ngày">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col [nzSpan]="6" class="ml-3">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="dataSearch.dateTo" name="dateTo" nzPlaceHolder="Đến ngày"
+          [nzAllowClear]="false">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col [nzSpan]="6" class="ml-2">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.customerId" name="customerId"
+          nzPlaceHolder="chọn khách hàng">
+          <nz-option *ngFor="let item of lstCustomer " [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <button nz-button nzType="primary" nzShape="round" (click)="searchData()" nz-tooltip nzTooltipTitle="Tìm kiếm"
+    class="mr-2 ml-2">
+    <i nz-icon nzType="search" nzTheme="outline"></i>
+    Tìm kiếm
+  </button>
+</nz-row>
+
+<nz-row nzGutter="6" class="wrapperBox">
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-success ">
+      <div class="inner">
+        <h3>{{ ( dataObject.feeBeforTax ? dataObject.feeBeforTax : 0 ) | number: '1.0-2' }}</h3>
+        <p>Cước trước thuế</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="euro" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-info ">
+      <div class="inner">
+        <h3>{{ ( dataObject.tax ? dataObject.tax : 0 ) | number: '1.0-2' }}</h3>
+        <p>Thuế</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="dollar" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-box ">
+      <div class="inner">
+        <h3>{{ ( dataObject.feeInvoice ? dataObject.feeInvoice : 0 ) | number: '1.0-2' }}</h3>
+        <p>Tổng cước</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="pay-circle" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-danger ">
+      <div class="inner">
+        <h3>{{ ( dataObject.feeCash ? dataObject.feeCash : 0 ) | number: '1.0-2' }}</h3>
+        <p>Cước tiền mặt</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="transaction" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-cyan ">
+      <div class="inner">
+        <h3>{{ ( dataObject.paymentOnBehalf ? dataObject.paymentOnBehalf : 0 ) | number: '1.0-2' }}</h3>
+        <p>Chi hộ</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="reconciliation" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+  <div nz-col class="gutter-row" [nzSpan]="8">
+    <div class="small-box bg-black ">
+      <div class="inner">
+        <h3>{{ ( dataObject.refund ? dataObject.refund : 0 ) | number: '1.0-2' }}</h3>
+        <p>Trả lại</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="wallet" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+
+</nz-row>
+
+<nz-row class="mt-3">
+  <nz-col nzSpan="24" class="text-center">
+    <h3><b style="text-transform: uppercase ;">công nợ đã thu</b></h3>
+  </nz-col>
+</nz-row>
+<nz-row nzGutter="6" class="wrapperBox mt-3">
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <div class="small-box bg-cornflowerblue ">
+      <div class="inner">
+        <h3>{{ ( dataObject.collectedFee ? dataObject.collectedFee : 0 ) | number: '1.0-2' }}</h3>
+        <p>Cước đã thu</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="euro-circle" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <div class="small-box bg-violet ">
+      <div class="inner">
+        <h3>{{ ( dataObject.pobCollect ? dataObject.pobCollect : 0 ) | number: '1.0-2' }}</h3>
+        <p>Chi hộ đã thu</p>
+      </div>
+      <div class="icon">
+        <i nz-icon nzType="dollar-circle" nzTheme="outline"></i>
+      </div>
+    </div>
+  </div>
+</nz-row>
+
+
+<nz-row class="mt-3">
+  <nz-col nzSpan="24" class="text-center">
+    <h3><b style="text-transform: uppercase ;">Báo cáo công nợ theo năm ({{yearFilter | date: 'yyyy'}})</b></h3>
+  </nz-col>
+</nz-row>
+
+<nz-row class="mt-3 text-center">
+  <div nz-col [nzSpan]="6" class="ml-3">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <nz-date-picker nzMode="year" [nzFormat]="yearFormat" [(ngModel)]="yearFilter" (ngModelChange)="loadDataDebt()">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col [nzSpan]="6" class="ml-2">
+    <nz-form-item nzFlex>
+      <nz-form-control [nzSm]="24" [nzXs]="24">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="customerId" name="customerId" (ngModelChange)="loadDataDebt()"
+          nzPlaceHolder="chọn khách hàng">
+          <nz-option *ngFor="let item of lstCustomer " [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col [nzSpan]="24" class="mt-3">
+    <div id="chartXYContract" #chartXYContract style="width: auto; height: 350px" class="mr-3" class="mt-2"></div>
+  </div>
+</nz-row>

@@ -1,0 +1,295 @@
+<div class="text-center">
+  <h2 class="text-title text-up">THÔNG TIN LOẠI ĐƠN HÀNG</h2>
+</div>
+
+<nz-tabset *ngIf="dataObject" class="mt-4">
+  <nz-tab nzTitle="Thông Tin Chung">
+    <div nz-row nzGutter="6">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã Đơn Hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.code }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Phòng ban</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.createdByDepartmentName }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Số Booking</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.bookingNumber }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Khách hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.customerName }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <!-- Công ty xuất hoá đơn chi hộ -->
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên công ty xuất hóa đơn chi hộ</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.invoiceCompanyName }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã số thuế công ty xuất hóa đơn chi hộ
+          </nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.invoiceCompanyTaxNumber }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa chỉ công ty xuất hóa đơn chi hộ</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.invoiceCompanyAddress }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+      <!-- Công ty xuất hoá đơn cước  -->
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên công ty xuất hóa đơn cước</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.freightCompanyName }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã số thuế công ty xuất hóa đơn cước</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.freightCompanyTaxNumber }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa chỉ công ty xuất hóa đơn cước</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.freightCompanyAddress }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Số hợp đồng nội bộ khách hàng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.internalNumberOfCustomerContracts }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên hãng tàu</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.shipName }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Cước tiền mặt</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject?.cashCharges == 0 ? 'Không' : 'Có' }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ghi chú</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.description }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Hợp đồng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ dataObject.customerContractName }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Dịch vụ vận chuyển</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ coreService.getEnumElementName(enumData.ServiceType, dataObject.serviceType) }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Hình thức vận chuyển</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b>{{ coreService.getEnumElementName(enumData.TransportType, dataObject.transportType) }}</b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Trạng thái</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <nz-form-control [nzSm]="20" [nzXs]="24">
+              <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">Không hoạt động</nz-tag>
+              <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+            </nz-form-control>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Giá cước khác</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b [ngStyle]="dataObject.totalFeeErr?{'color': '#cf1322'} : {}">
+              {{ dataObject.totalFeeErr ? dataObject.totalFeeErr : dataObject.totalPrice | number }}
+            </b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Giá cước hợp đồng</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b [ngStyle]="dataObject.totalFeeErr?{'color': '#cf1322'} : {}">
+              {{ dataObject.totalFeeErr ? dataObject.totalFeeErr : dataObject.totalFee | number }}
+            </b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Giá cước hoá đơn</nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <b [ngStyle]="dataObject.totalFeeErr?{'color': '#cf1322'} : {}">
+              {{ dataObject.totalFeeErr ? dataObject.totalFeeErr : dataObject.totalInvoicePrice | number }}
+            </b>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="24">
+        <ng-container class="ml-2" *ngFor="let item of dataObject.fileList">
+          <ng-container *ngIf="!!item.isNotImage">
+            <a style="margin-top: 10px;" href="{{ item.url }}" target="_blank">
+              <li>{{item.name}}</li>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="!item.isNotImage">
+            <img nz-image style="margin-right: 10px; margin-top: 10px; border: 2px solid #666" width="100px"
+              height="100px" nzSrc="{{ item.url }}" alt="{{item.name}}" />
+          </ng-container>
+        </ng-container>
+      </div>
+
+      <nz-collapse nz-col nzSpan="24" [nzBordered]="true" class="mb-2 mt-2" *ngIf="dataObject.lstOrderCont">
+        <nz-collapse-panel nzHeader="Danh sách container trong đơn hàng" nzActive="true" class="ant-bg-antiquewhite">
+          <div class="table-scroll-x-order" [ngStyle]="{'min-width': screenWidth > 200 ? '100%' : '' }">
+            <nz-table class="mb-3" [nzData]="['']" [nzShowPagination]="false" [nzScroll]="{ x: '3000px', y: null }"
+              nzTableLayout="fixed">
+              <thead>
+                <tr>
+                  <th nzWidth="200px" nzLeft>Loại container</th>
+                  <th>Mã container</th>
+                  <th *ngIf="dataObject.transportType == enumData.TransportType.LCL.code">Khối lượng container</th>
+                  <th class="text-center"> Phục lục hợp đồng</th>
+                  <th *ngIf="dataObject.serviceType != enumData.ServiceType.NhapKhau.code">Địa điểm lấy container rỗng
+                  </th>
+                  <th *ngIf="dataObject.serviceType != enumData.ServiceType.NhapKhau.code">Địa chỉ lấy container rỗng
+                  </th>
+                  <th *ngIf="dataObject.serviceType != enumData.ServiceType.NhapKhau.code">Thời gian lấy container
+                    rỗng
+                  </th>
+                  <th class="text-center"> Địa điểm lấy hàng</th>
+                  <th class="text-center"> Địa chỉ lấy hàng</th>
+                  <th class="text-center"> Thời gian dự kiến đến lấy hàng</th>
+                  <th class="text-center"> Địa điểm giao hàng</th>
+                  <th class="text-center"> Địa chỉ giao hàng</th>
+                  <th class="text-center"> Cut off time</th>
+                  <th *ngIf="dataObject.serviceType != enumData.ServiceType.XuatKhau.code">Địa điểm trả container rỗng
+                  </th>
+                  <th *ngIf="dataObject.serviceType != enumData.ServiceType.XuatKhau.code">Địa chỉ trả container rỗng
+                  </th>
+
+                  <th *ngIf="dataObject.serviceType != enumData.ServiceType.XuatKhau.code">Thời gian trả container
+                    rỗng
+                  </th>
+                  <th nzWidth="80px" nzRight></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let dataRow of dataObject.lstOrderCont">
+                  <td nzWidth="200px" nzLeft>{{ dataRow.contTypeName }}</td>
+                  <td>{{ dataRow.code }}</td>
+                  <td *ngIf="dataObject.transportType == enumData.TransportType.LCL.code">{{ dataRow.weight }} (Tấn)
+                  </td>
+                  <td>{{ dataRow.__customerContractTerm__?.name }} </td>
+                  <td *ngIf="dataObject.serviceType != enumData.ServiceType.NhapKhau.code">{{
+                    dataRow.emptyPickupLocationName }}</td>
+                  <td *ngIf="dataObject.serviceType != enumData.ServiceType.NhapKhau.code">{{
+                    dataRow.emptyPickupLocationAddress }}</td>
+                  <td *ngIf="dataObject.serviceType != enumData.ServiceType.NhapKhau.code">{{ dataRow.emptyPickupTime |
+                    date: 'dd/MM/yyyy' }}</td>
+                  <td>{{ dataRow.fromLocationName }}</td>
+                  <td>{{dataRow.fromLocationAddress }}</td>
+                  <td>{{ dataRow.fromETD | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ dataRow.toLocationName }}</td>
+                  <td>{{ dataRow.toLocationAddress }}</td>
+                  <td>{{ dataRow.toETD | date:'dd/MM/yyyy' }}</td>
+                  <td *ngIf="dataObject.serviceType != enumData.ServiceType.XuatKhau.code">{{
+                    dataRow.emptyReturnLocationName }} </td>
+                  <td *ngIf="dataObject.serviceType != enumData.ServiceType.XuatKhau.code">{{
+                    dataRow.emptyReturnLocationAddress }}</td>
+                  <td *ngIf="dataObject.serviceType != enumData.ServiceType.XuatKhau.code">{{ dataRow.emptyReturnTime |
+                    date:'dd/MM/yyyy' }}</td>
+                  <td nzWidth="80px" nzRight>
+                    <button (click)="clickDetail(dataRow)" nz-tooltip nzTooltipTitle="Chi tiết sản phẩm trong container"
+                      nz-button nzType="primary" nzShape="circle" class="mr-2">
+                      <i nz-icon nzType="eye" nzTheme="outline"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+
+  </nz-tab>
+</nz-tabset>
+<div nz-row class="mt-3">
+  <div nz-col [nzSpan]="24" class="text-center">
+    <button nz-button nzShape="round" nzType="default" class="mr-3" (click)="closeDialog()">
+      <i nz-icon nzType="lock" nzTheme="outline"></i> Đóng
+    </button>
+  </div>
+</div>

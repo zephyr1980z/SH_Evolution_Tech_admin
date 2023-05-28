@@ -1,0 +1,83 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Mã phụ tùng</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24"
+          nzErrorTip="Vui lòng nhập mã phụ tùng (1-250 kí tự và không kèm ký tự đặc biệt hoặc khoảng trắng)!">
+          <input nz-input placeholder="Nhập mã 1-250 kí tự" [disabled]="isEditItem" [(ngModel)]="dataObject.code"
+            name="code" required pattern="^([a-zA-Z0-9]){1,250}$" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Tên phụ tùng</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập tên phụ tùng (1-250 kí tự)!">
+          <input nz-input placeholder="Nhập tên 1-250 kí tự" [(ngModel)]="dataObject.name" name="name" required
+            pattern=".{1,250}" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Nhóm phụ tùng</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhóm phụ tùng!">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn nhóm phụ tùng" [(ngModel)]="dataObject.itemGroupId"
+            name="itemGroupId" required>
+            <nz-option *ngFor="let item of lstItemGroup" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Mức tồn kho an toàn
+        </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập Mức tồn kho an toàn!">
+          <input nz-input placeholder="Nhập mức tồn kho an toàn" [(ngModel)]="dataObject.safetyStockQuantity"
+            name="safetyStockQuantity" autocomplete="off" required pattern="^([.0-9]){1,250}$" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Quy cách</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng quy cách!">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn quy cách" [(ngModel)]="dataObject.specificationId"
+            name="specificationId" required (ngModelChange)="onChangeSpecification()">
+            <nz-option *ngFor="let item of lstSpecification" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Quy đổi</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" *ngIf="dataObject.specificationId">
+          {{ dataObject?.unitName }} = {{ dataObject?.unitToBaseUnitQuantity }} {{dataObject?.baseUnitName}}
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24">Mô tả</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mô tả!">
+          <textarea nz-input placeholder="Nhập mô tả" name="description" [(ngModel)]="dataObject.description" rows="3"
+            auto></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col [nzSpan]="24" class="text-center">
+      <button nzShape="round" nz-button [disabled]="!frmAdd.form.valid" nzType="primary" class="mr-3"
+        (click)="onSave()">Lưu</button>
+    </div>
+  </div>
+</form>

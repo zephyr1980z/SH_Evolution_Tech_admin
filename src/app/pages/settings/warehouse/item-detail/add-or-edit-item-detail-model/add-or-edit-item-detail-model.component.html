@@ -1,0 +1,56 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Mã chi tiết phụ tùng</nz-form-label>
+        <nz-form-control [nzSm]="12" [nzXs]="24"
+          nzErrorTip="Vui lòng nhập mã chi tiết phụ tùng (1-250 kí tự và không kèm ký tự đặc biệt hoặc khoảng trắng)!">
+          <input nz-input placeholder="Nhập mã 1-250 kí tự" [disabled]="isEditItem" [(ngModel)]="dataObject.code"
+            name="code" required pattern="^([a-zA-Z0-9]){1,250}$" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Ngày đóng gói</nz-form-label>
+        <nz-form-control [nzSm]="12" [nzXs]="24">
+          <nz-date-picker [(ngModel)]="dataObject.manufactureDate" nzPlaceHolder="Chọn hạn sử dụng"
+            name="manufactureDate" nzFormat="dd-MM-yyyy" required>
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Hạn sử dụng</nz-form-label>
+        <nz-form-control [nzSm]="12" [nzXs]="24">
+          <nz-date-picker [(ngModel)]="dataObject.expiryDate" nzPlaceHolder="Chọn hạn sử dụng" name="expiryDate"
+            nzFormat="dd-MM-yyyy" required>
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+
+    <nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Phụ tùng</nz-form-label>
+        <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Vui lòng phụ tùng!">
+          <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Chọn phụ tùng" [(ngModel)]="dataObject.itemId" name="type"
+            required>
+            <nz-option *ngFor="let item of lstItem" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </div>
+  <div nz-row>
+    <div nz-col [nzSpan]="24" class="text-center">
+      <button nzShape="round" nz-button [disabled]="!frmAdd.form.valid" nzType="primary" class="mr-3"
+        (click)="onSave()">Lưu</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,94 @@
+<div>
+  <div nz-row nzGutter="8">
+    <div nz-col nzSpan="3" class="float-left">
+    </div>
+    <div nz-col nzSpan="21" class="float-right">
+      <div nz-row nzGutter="8">
+        <div nz-col nzSpan="21"></div>
+        <button nz-col nzSpan="3" nz-button nzType="primary" (click)="searchData(true)" nzShape="round">
+          Làm Mới </button>
+      </div>
+    </div>
+  </div>
+  <div nz-row class="mt-3" nzGutter="8">
+    <nz-table class="mb-3" nz-col nzSpan="24" [nzData]="['']" [nzLoading]="loading" [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th class="text-center">Mã Cấu Hình</th>
+          <th class="text-center">Tên Cấu Hình</th>
+          <th style="text-align: center;" class="text-center">Giá Trị</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of listOfData">
+          <td>{{ data.code }}</td>
+          <td>
+            <i (click)="showDetail(data)" nz-tooltip nzTooltipTitle="Thông Tin Chi Tiết" style="font-size: large;"
+              nz-icon nzType="question-circle" nzTheme="twotone"></i>
+            &nbsp;&nbsp;<b>{{ data.name }}</b>
+          </td>
+          <td class="w-33">
+
+            <input *ngIf="data.valueNumber" nz-input id="{{ data.valueNumber }}" [(ngModel)]="data.valueNumber"
+              style="text-align: center; border-radius: 20px; width: 100%; height: 35px; font-weight: bold;"
+              currencyMask />
+
+            <input *ngIf="!data.valueNumber" nz-input id="{{ data.valueString }}" [(ngModel)]="data.valueString"
+              style="text-align: center; border-radius: 20px; width: 100%; height: 35px; font-weight: bold;" />
+
+          </td>
+          <td class="w-3">{{ data.unit }} </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div nz-col nzSpan="24" class="text-center mt-3">
+      <button nz-button (click)="onSaveData()" nzShape="round" nzDanger>
+        <i nz-icon nzType="save" nzTheme="outline"></i> Cập Nhật</button>
+    </div>
+
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="isVisibleDetail" nzTitle="Thông Tin Cấu Hình" (nzOnCancel)="hideDetail()">
+  <div nz-row *nzModalContent>
+    <div nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Tên cấu hình</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <h3 style="color: blue; font-weight: bold;">{{ dataObject.name }}</h3>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mã cấu hình</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <b>{{ dataObject.code }}</b>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Giá trị</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <b>{{ dataObject.value }}</b>&nbsp; {{ dataObject.unit }}
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="24">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Mô tả</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <b>{{ dataObject.description }}</b>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+  </div>
+  <div *nzModalFooter class="text-center">
+    <button (click)="hideDetail()" nz-button nzShape="round">
+      <i nz-icon nzType="close"></i>Đóng
+    </button>
+  </div>
+</nz-modal>

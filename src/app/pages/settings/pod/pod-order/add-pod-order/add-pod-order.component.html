@@ -1,0 +1,56 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-upload [(nzFileList)]="dataObject.fileList" [nzAction]="urlAction" nzListType="picture"
+    [nzPreview]="handlePreview" [nzMultiple]="true" (nzChange)="handleChange($event)" accept=".doc, .docx, .pdf, .xlsx">
+    <button nz-button>
+      <span nz-icon nzType="upload"></span>
+      Thêm mới chứng từ
+    </button>
+  </nz-upload>
+</form>
+
+<form class="mt-3">
+  <nz-table #ajaxTable [nzData]="dataObject?.lstOrderPods" [nzShowPagination]="false" [nzFrontPagination]="false">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Ngày Tạo</th>
+        <th>Chứng từ</th>
+        <th>Hình ảnh</th>
+        <th>Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of dataObject.lstOrderPods ; let i=index">
+        <tr>
+          <td class="text-center" nzWidth="200px" nzLeft>{{i + 1}}</td>
+          <td>{{data.createdAt | date:"dd/MM/yyyy HH:mm"}}</td>
+          <td>{{data.fileName}}</td>
+          <td><img [src]="data.fileUrl" alt="" width="100px"></td>
+          <td>
+            <!-- <button nz-button nzType="primary" nzDanger nzShape="circle" nz-tooltip nzTooltipTitle="Xóa" nz-popconfirm
+              nzPopconfirmTitle="Bạn có chắc muốn [XÓA]?" (nzOnConfirm)="onDelete(i)" class="mr-2">
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button> -->
+            <a [href]="data.fileUrl" nz-tooltip nzTooltipTitle="Tải xuống" rel="noopener noreferrer">
+              <i nz-icon nzType="download" class="btn" nzTheme="outline"></i>
+            </a>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Dòng {{ range[0] }} tới {{ range[1] }} trong tổng số {{ total }} dòng
+  </ng-template>
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" nz-button nzType="primary" [disabled]="!dataObject.fileList" class="mr-3 mt-3"
+        (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

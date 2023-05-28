@@ -1,0 +1,29 @@
+<nz-row mat-dialog-title>
+  <nz-col nzSpan="24" class="text-center fs-24"> DANH SÁCH XÃ/PHƯỜNG </nz-col>
+  <nz-col nzSpan="24" class="text-center fs-16">
+    {{ data.cityName | uppercase }} - {{ data.districtName || data.name | uppercase }}
+  </nz-col>
+</nz-row>
+
+<nz-row mat-dialog-content class="mt-3">
+  <nz-col nzSpan="24" class="mt-1">
+    <nz-table [nzLoading]="loading" [nzShowPagination]="false" nzTemplateMode>
+      <thead>
+        <tr class="text-nowrap">
+          <th class="text-center" nzWidth="50px">STT</th>
+          <th class="text-center"> Mã Xã / Phường</th>
+          <th class="text-center"> Tên Xã / Phường</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let data of listOfData; let i = index">
+          <tr>
+            <td align="center">{{ i + 1 }}</td>
+            <td>{{ data.code }}</td>
+            <td>{{ data.name }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  </nz-col>
+</nz-row>

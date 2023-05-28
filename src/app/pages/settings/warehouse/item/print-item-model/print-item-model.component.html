@@ -1,0 +1,15 @@
+<div id="print-section" class="printsection" style="page-break-before: always">
+  <ng-container>
+    <div class="printsection" style="page-break-before: always;break-after:page">
+      <h2 class="title-payment text-center" nz-typography>MÃ BARCODE</h2>
+      <div nz-row [nzGutter]="8" nzJustify="center" class="text-center body-barcode-container mb-4">
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<div class="mt-5 text-center" *ngIf="dataObject">
+  <!-- <button nz-button nzType="primary" [useExistingCss]="true" printSectionId="print-section" ngxPrint>
+    In phiếu
+  </button> -->
+</div>

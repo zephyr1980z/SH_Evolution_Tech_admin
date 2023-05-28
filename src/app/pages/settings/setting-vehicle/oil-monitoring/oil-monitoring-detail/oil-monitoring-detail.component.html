@@ -1,0 +1,61 @@
+<div class="text-center">
+  <span class="fs-18 fw-500 text-primary text-up">{{ modalTitle }}</span>
+</div>
+
+<nz-collapse nzBordered="false" nzOpen class="mb-2">
+  <nz-collapse-panel nzHeader="Tìm kiếm" [nzActive]="true">
+    <nz-row nzGutter="8">
+      <div nz-col [nzSpan]="6">
+        <nz-form-item nzFlex>
+          <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Ngày đổ dầu
+          </nz-form-label>
+          <nz-form-control [nzSm]="20" [nzXs]="24">
+            <nz-range-picker [nzShowTime]="false" [nzFormat]="'dd/MM/yyyy'" [(ngModel)]="dataSearch.oilingDate"
+              name="oilingDate">
+            </nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </nz-row>
+    <nz-row class="mt-2" nzJustify="center">
+      <nz-col nzSpan="2">
+        <button nz-button nzType="primary" nzShape="round" (click)="searchData(true)">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+<div nz-row [nzGutter]="8">
+
+  <div nz-col [nzSpan]="24" class="text-left">
+    <span>Tổng số dầu đã đổ: <b><i>{{ totalOilMonitoring | number }}</i></b>
+      <i>&nbsp;(lít)</i>
+    </span>
+  </div>
+
+</div>
+<div nz-row>
+  <nz-table nz-col nzSpan="24" class="mb-3" #ajaxTable [nzData]="listOfData" [nzLoading]="loading"
+    [nzShowPagination]="false" nzBordered nzTemplateMode>
+    <thead>
+      <tr>
+        <th class="text-center"> Ngày đổ dầu</th>
+        <th class="text-center"> Số lượng đổ dầu<i>&nbsp;(lít)</i></th>
+        <th class="text-center"> Số tiền đổ dầu<i>&nbsp;(VNĐ)</i></th>
+        <th class="text-center"> Hình ảnh hóa đơn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td class="mw-25">{{ data.oilingDate | date:'dd/MM/yyyy'}}</td>
+        <td class="mw-25 text-right">{{ data.quantity| number }}</td>
+        <td class="mw-25 text-right">{{ data.money | number}}</td>
+        <td class="mw-25 ">
+          <img nz-image style="margin-right: 10px; margin-top: 10px;" width="100px" height="100px"
+            nzSrc="{{ data.imageBill }}" alt="{{data.imageBill}}" />
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

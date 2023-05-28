@@ -1,0 +1,135 @@
+<div class="text-center mb-2">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form mb-2" #frmAdd="ngForm">
+  <nz-collapse nz-col nzSpan="24" [nzBordered]="true" class="mb-2">
+    <nz-collapse-panel nzHeader="Danh sách sản phẩm trong đơn hàng" nzActive="true" class="ant-bg-antiquewhite">
+      <nz-row>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Sản phẩm
+            </nz-form-label>
+            <nz-form-control [nzSm]="23" [nzXs]="24" nzErrorTip="Vui lòng chọn sản phẩm!">
+              <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataChooseProduct.productId" name="productId"
+                nzPlaceHolder="Chọn sản phẩm">
+                <nz-option *ngFor="let item of lstOfCusProduct" [nzLabel]="item.name" [nzValue]="item.productId">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa điểm lấy hàng
+            </nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24" nzErrorTip="Vui lòng chọn Địa điểm lấy hàng!">
+              <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataChooseProduct.fromLocationId" name="fromLocationId"
+                nzPlaceHolder="Chọn Địa điểm lấy hàng" (ngModelChange)="onChangeFromLocationPro()">
+                <nz-option *ngFor="let item of lstOfCusLocation" [nzLabel]="item.name" [nzValue]="item.locationId">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex *ngIf="dataChooseProduct.fromLocationId">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa chỉ lấy hàng
+            </nz-form-label>
+            <span>{{dataChooseProduct.fromLocationAddress}}</span>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Thời gian dự kiến đến lấy hàng</nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24" nzErrorTip="Vui lòng nhập Thời gian dự kiến đến lấy hàng!">
+              <nz-date-picker [(ngModel)]="dataChooseProduct.fromETD"
+                nzPlaceHolder="Chọn Thời gian dự kiến đến lấy hàng" name="fromETD" nzShowTime
+                nzFormat="yyyy-MM-dd HH:mm:ss">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Thời gian được phép lấy hàng</nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24" nzErrorTip="Vui lòng nhập Thời gian được phép lấy hàng!">
+              <nz-date-picker [(ngModel)]="dataChooseProduct.fromETA" nzPlaceHolder="Chọn Thời gian được phép lấy hàng"
+                name="fromETA" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa điểm giao hàng
+            </nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24" nzErrorTip="Vui lòng chọn Địa điểm giao hàng!">
+              <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataChooseProduct.toLocationId" name="toLocationId"
+                nzPlaceHolder="Chọn Địa điểm giao hàng" (ngModelChange)="onChangeToLocationPro()">
+                <nz-option *ngFor="let item of lstOfCusLocation" [nzLabel]="item.name" [nzValue]="item.locationId">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex *ngIf="dataChooseProduct.toLocationId">
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Địa chỉ giao hàng
+            </nz-form-label>
+            <span>{{dataChooseProduct.toLocationAddress}}</span>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item nzFlex>
+            <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left">Thời gian dự kiến đến giao hàng</nz-form-label>
+            <nz-form-control [nzSm]="20" [nzXs]="24" nzErrorTip="Vui lòng nhập Thời gian dự kiến đến giao hàng!">
+              <nz-date-picker [(ngModel)]="dataChooseProduct.toETD" nzPlaceHolder="Chọn Thời gian dự kiến đến giao hàng"
+                name="toETD" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </nz-row>
+      <div nz-row class="mt-2">
+        <div nz-col [nzSpan]="24" class="text-center">
+          <button nz-button [disabled]="!dataChooseProduct.productId" nzShape="round" nzType="primary"
+            (click)="onAddProduct()">
+            <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm Sản Phẩm
+          </button>
+        </div>
+        <nz-table nz-col nzSpan="24" class="mt-2" [nzData]="['']" [nzShowPagination]="false" nzTemplateMode>
+          <thead>
+            <tr>
+              <th class="text-center"> STT</th>
+              <th class="text-center"> Tên sản phẩm</th>
+              <th class="text-center"> Tác vụ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let data of dataObject.lstContProduct; let i = index">
+              <tr *ngIf="data">
+                <td class="text-center">{{i + 1}}</td>
+                <td>{{ coreService.getArrayElementId(lstOfCusProductSrc, data.productId, 'productId') }}</td>
+                <td>
+                  <button nz-button nzType="primary" nzDanger nzShape="circle" nz-tooltip nzTooltipTitle="Xóa"
+                    nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn [XÓA]?" (nzOnConfirm)="onDeleteProduct(i)"
+                    class="mr-2">
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-collapse-panel>
+  </nz-collapse>
+  <nz-row>
+    <nz-col [nzSpan]="24" class="text-center">
+      <button nzShape="round" nz-button [disabled]="!frmAdd.form.valid" nzType="primary" (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

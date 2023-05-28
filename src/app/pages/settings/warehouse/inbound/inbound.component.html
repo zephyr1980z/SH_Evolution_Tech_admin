@@ -1,0 +1,103 @@
+<nz-collapse nzBordered="false" nzOpen class="mb-2">
+  <nz-collapse-panel nzHeader="Tìm kiếm" [nzActive]="true">
+    <nz-row nzGutter="8">
+      <span nz-col nzSpan="8">
+        <input nz-input [(ngModel)]="dataSearch.code" name="code" placeholder="Lọc mã" />
+      </span>
+      <span nz-col nzSpan="8">
+        <input nz-input [(ngModel)]="dataSearch.name" name="name" placeholder="Lọc tên" />
+      </span>
+      <nz-select nz-col nzSpan="8" nzShowSearch nzAllowClear [(ngModel)]="dataSearch.statusId" name="statusId"
+        nzPlaceHolder="Chọn trạng thái">
+        <nz-option *ngFor="let item of dataFilterStatus" [nzLabel]="item.name" [nzValue]="item.value"></nz-option>
+      </nz-select>
+    </nz-row>
+    <nz-row class="mt-2" nzJustify="center">
+      <nz-col nzSpan="2">
+        <button nz-button nzType="primary" nzShape="round" (click)="searchData(true)">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-row class="mb-2">
+  <button class="mr-2" nz-button nzType="primary" nzShape="round" (click)="clickAdd()"
+    *ngIf="coreService.checkPermission(enumRole.Add.code)">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm mới
+  </button>
+
+  <button *ngIf="coreService.checkPermission(enumRole.Export_Excel.code)" class="mr-2" nzShape="round" nz-button
+    (click)="clickDownloadTemplateExcel()" nzType="default"><i nz-icon nzType="download" nzTheme="outline"></i>Tải
+    Template Excel</button>
+  <input class="hidden" type="file" id="file" (change)="clickImportExcel($event)" placeholder="Upload file"
+    accept=".csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+  <label *ngIf="coreService.checkPermission(enumRole.Import_Excel.code)" nz-button nzShape="round" for="file"
+    class="lable-custom-file mr-2">
+    <i nz-icon nzType="upload"></i> Nhập Excel
+  </label>
+  <button *ngIf="coreService.checkPermission(enumRole.Export_Excel.code)" nz-button nzType="default"
+    (click)="onDownloadExcel()" nzShape="round">
+    <i nz-icon nzType="download" nzTheme="outline"></i> Tải Excel
+  </button>
+</nz-row>
+<nz-row>
+  <nz-table nz-col nzSpan="24" class="mb-3" #ajaxTable [nzData]="listOfData" [(nzPageSize)]="pageSize"
+    [nzLoading]="loading" [nzShowPagination]="false" nzBordered nzTemplateMode>
+    <thead>
+      <tr>
+        <th class="text-center"> Mã đơn nhập</th>
+        <th class="text-center"> Tên đơn nhập</th>
+        <th class="text-center"> Ngày nhập</th>
+        <th class="text-center"> Trạng thái đơn nhập</th>
+        <th class="text-center"> Tùy chọn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ajaxTable.data">
+        <td (click)="clickDetail(data)" class="mw-25">{{data.code}}</td>
+        <td (click)="clickDetail(data)" class="mw-25">{{data.name}}</td>
+        <td (click)="clickDetail(data)" class="mw-25">{{data.importDate | date: 'dd/MM/yyyy'}}</td>
+        <td (click)="clickDetail(data)" class="mw-25 text-center">
+          <nz-tag class="tag-status3" [nzColor]="coreService.getEnumElementColor(enumData.Inbound, data.status)">
+            {{coreService.getEnumElementName(enumData.Inbound, data.status)}}</nz-tag>
+        </td>
+        <td class="text-nowrap">
+          <button
+            *ngIf="data.status == 'MoiTao' && !data.isDeleted && coreService.checkPermission(enumRole.Confirm.code)"
+            nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn Xác nhận nhập kho?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="approveInbound(data)" nz-tooltip nzTooltipTitle="Xác nhận nhập kho" z nz-button
+            nzType="primary" nzShape="circle" class="mr-2" nzGhost>
+            <span nz-icon nzType="check" nzTheme="outline"></span>
+          </button>
+          <button
+            *ngIf="data.status == 'MoiTao' && !data.isDeleted && data.status != 'TuChoi' && coreService.checkPermission(enumRole.Update.code)"
+            (click)="clickEdit(data)" nz-tooltip nzTooltipTitle="Chỉnh sửa Đơn nhập kho" nz-button nzType="primary"
+            nzShape="circle" class="mr-2">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </button>
+          <button
+            *ngIf="data.status != 'TuChoi' && data.status != 'DaNhap' && data.status != 'DangNhap' && coreService.checkPermission(enumRole.Reject.code)"
+            nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn Từ Chối Phiếu Nhập ?" nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="onCancelInbound(data)" nz-tooltip nzTooltipTitle="Từ Chối Phiếu Nhập" nz-button
+            nzType="primary" nzShape="circle" class="mr-2 mb-1 ant-btn-danger">
+            <span nz-icon nzType="close" nzTheme="outline"></span>
+          </button>
+          <button *ngIf="coreService.checkPermission(enumRole.Print.code)" nz-tooltip zPopconfirmPlacement="bottom"
+            (click)="clickPrint(data)" nz-button nzShape="circle" nzTooltipTitle="In phiếu"
+            class="mr-2 mb-2 btn-primary">
+            <i nz-icon nzType="printer" nzTheme="outline"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+    (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+    nzShowSizeChanger>
+  </nz-pagination>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    Dòng {{ range[0] }} tới {{ range[1] }} trong tổng số {{ total }} dòng
+  </ng-template>
+</nz-row>

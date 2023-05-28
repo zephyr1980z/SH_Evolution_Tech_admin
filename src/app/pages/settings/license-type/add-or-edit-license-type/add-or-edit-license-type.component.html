@@ -1,0 +1,52 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form mt-3" #frmAdd="ngForm">
+  <nz-row nzGutter="6">
+    <!-- <nz-col nzSpan="12">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Mã loại bằng lái</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập mã loại bằng lái (1-250 kí tự)!">
+          <input
+            nz-input
+            [disabled]="isEditItem"
+            placeholder="Nhập mã loại bằng lái (1-250 kí tự)"
+            [(ngModel)]="dataObject.code"
+            name="code"
+            required
+            pattern=".{1,250}"
+            autocomplete="off"
+          />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col> -->
+    <nz-col nzSpan="12">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Tên loại bằng lái</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập tên loại bằng lái (1-250 kí tự)!">
+          <input nz-input placeholder="Nhập tên loại bằng lái (1-250 kí tự)" [(ngModel)]="dataObject.name" name="name"
+            required pattern=".{1,250}" autocomplete="off" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row nzGutter="6">
+    <nz-col nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left"> Mô tả </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+          <textarea rows="4" nz-input placeholder="Nhập Mô tả" [(ngModel)]="dataObject.description"
+            name="description"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </nz-row>
+
+  <nz-row>
+    <nz-col nzSpan="24" class="text-center">
+      <button nzShape="round" nz-button nzType="primary" (click)="onSave()">Lưu</button>
+    </nz-col>
+  </nz-row>
+</form>

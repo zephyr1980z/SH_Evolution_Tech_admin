@@ -1,0 +1,68 @@
+<nz-collapse nzBordered="false">
+  <nz-collapse-panel nzHeader="Tìm kiếm" [nzActive]="false">
+    <nz-row nzGutter="12">
+      <nz-col nzSpan="8">
+        <input nz-input placeholder="Tìm theo mã Quận/Huyện" [(ngModel)]="dataSearch.code" name="code" />
+      </nz-col>
+      <nz-col nzSpan="8">
+        <input nz-input placeholder="Tìm theo tên Quận/Huyện" [(ngModel)]="dataSearch.name" name="name" />
+      </nz-col>
+      <nz-col nzSpan="8">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.cityId" name="cityId"
+          nzPlaceHolder="Chọn Tỉnh/Thành">
+          <nz-option *ngFor="let item of dataCity" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-col>
+      <nz-col nzSpan="24" class="text-center mt-3">
+        <button nz-button nzType="primary" (click)="searchData(true)" nzShape="round">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-row class="mt-3">
+  <nz-col nzSpan="24">
+    <nz-table class="mb-3" #ajaxTable [nzData]="listOfData" [(nzPageSize)]="pageSize" [nzLoading]="loading"
+      [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th class="text-center">Mã Quận / Huyện</th>
+          <th class="text-center">Tên Quận / Huyện</th>
+          <th class="text-center">Tên Tỉnh / Thành</th>
+          <th class="text-center">Danh sách Xã / Phường</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let data of ajaxTable.data">
+          <tr style="cursor: pointer">
+            <td>{{ data.code }}</td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.cityName }}</td>
+            <td class="text-nowrap">
+              <nz-badge [nzCount]="data.numWard" [nzStyle]="{ backgroundColor: '#706a6a' }" class="mr-3">
+                <button (click)="viewWard(data)" nz-tooltip nzTooltipTitle="Danh sách Xã/Phường" nz-button
+                  nzType="default" nzShape="circle"><i nz-icon nzType="unordered-list" nzTheme="outline"></i>
+                </button>
+              </nz-badge>
+              <nz-badge [nzCount]="data.numLocations" [nzStyle]="{ backgroundColor: '#706a6a' }" class="mr-3">
+                <button (click)="viewLocationList(data)" nz-tooltip nzTooltipTitle="Danh sách địa điểm thành phố"
+                  nz-button nzType="default" nzShape="circle">
+                  <i nz-icon nzType="environment" nzTheme="outline"></i>
+                </button>
+              </nz-badge>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+    <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+      nzShowSizeChanger>
+    </nz-pagination>
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{ range[0] }}-{{ range[1] }} of {{ total }} items
+    </ng-template>
+  </nz-col>
+</nz-row>

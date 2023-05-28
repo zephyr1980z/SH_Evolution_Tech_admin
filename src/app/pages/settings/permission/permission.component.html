@@ -1,0 +1,45 @@
+<nz-row nzGutter="8">
+  <nz-col nzSpan="6"></nz-col>
+  <nz-col nzSpan="10">
+    <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataObject.userId" name="userId" nzPlaceHolder="Chọn nhân viên"
+      (ngModelChange)="onChangeEmployee()">
+      <nz-option *ngFor="let item of dataEmployee" [nzLabel]="item.name" [nzValue]="item.userId"></nz-option>
+    </nz-select>
+  </nz-col>
+  <nz-col nzSpan="6">
+    <button nz-button nzType="primary" (click)="saveData()"
+      *ngIf="coreService.checkPermission(PermissionRole.Update.code)">
+      Lưu phân quyền
+    </button>
+  </nz-col>
+</nz-row>
+
+<i>*Chọn nhân viên trước khi chỉnh sửa quyền</i>
+
+<nz-tabset>
+  <ng-template #temp1>
+    <i nz-icon nzType="tool" nzTheme="outline"></i>
+    <b class="mr-2">TMS</b>
+
+  </ng-template>
+  <nz-tab [nzTitle]="temp1" *ngIf="coreService.checkPermission(PermissionRole.View.code)">
+    <app-admin [objPermissionRole]="objPermissionRole" [userId]="dataObject.userId"></app-admin>
+  </nz-tab>
+
+  <ng-template #temp2>
+    <i nz-icon nzType="clear" nzTheme="outline"></i>
+    <b class="mr-2">Chấm công</b>
+  </ng-template>
+  <nz-tab [nzTitle]="temp2" *ngIf="coreService.checkPermission(PermissionTimeKeepingRole.View.code)">
+    <app-timekeeping [objPermissionRole]="objPermissionRole" [userId]="dataObject.userId"></app-timekeeping>
+  </nz-tab>
+
+  <ng-template #temp3>
+    <i nz-icon nzType="clear" nzTheme="outline"></i>
+    <b class="mr-2">Kho</b>
+  </ng-template>
+  <nz-tab [nzTitle]="temp3" *ngIf="coreService.checkPermission(PermissionWarehouseRole.View.code)">
+    <app-warehouse [objPermissionRole]="objPermissionRole" [userId]="dataObject.userId"></app-warehouse>
+  </nz-tab>
+
+</nz-tabset>

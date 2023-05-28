@@ -1,0 +1,155 @@
+<div class="mt-2 text-center">
+  <span class="fs-18 fw-500 text-primary">{{ modelTitle | uppercase }}</span>
+  <br />
+</div>
+<form nz-form class="ant-advanced-search-form" #frmAdd="ngForm">
+  <div nz-row [nzGutter]="8">
+    <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label class="text-left" [nzSm]="24" [nzXs]="24" nzRequired>Mã đơn phiếu </nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24"
+          nzErrorTip="Vui lòng nhập mã đơn (1-250 kí tự và không kèm ký tự đặc biệt hoặc khoảng trắng)!">
+          <input nz-input placeholder="Nhập mã 1-250 kí tự" [disabled]="isEditItem" [(ngModel)]="dataObject.code"
+            name="code" required pattern="^([a-zA-Z0-9]){1,250}$" />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Ngày kiểm</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng chọn ngày kiểm">
+          <nz-date-picker nzPlaceHolder="Chọn ngày kiểm" [(ngModel)]="dataObject.inspectionDate" name="inspectionDate"
+            nzFormat="dd-MM-yyyy" required>
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+    <nz-col [nzSpan]="8">
+      <nz-form-item nzFlex>
+        <nz-form-label [nzSm]="24" [nzXs]="24" class="text-left" nzRequired>Lý do kiểm</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Vui lòng nhập lý do kiểm">
+          <input nz-input placeholder="Nhập lý do kiểm" [(ngModel)]="dataObject.reason" name="reason"
+            [disabled]="isEditItem" required />
+        </nz-form-control>
+      </nz-form-item>
+    </nz-col>
+  </div>
+
+  <form nz-form nz-row nz-col [nzSpan]="24" class="ant-advanced-search-form" #frmAddInventoryManagement="ngForm">
+    <ng-container>
+      <nz-collapse nz-col [nzSpan]="24" [nzBordered]="true" class="mt-2">
+        <nz-collapse-panel nzHeader=" Danh sách phụ tùng" nzActive=" true" class="ant-bg-antiquewhite">
+          <nz-row nzGutter="8">
+            <nz-col [nzSpan]="8">
+              <input nz-input [(ngModel)]="dataSearch.itemCode" name="itemCode" placeholder="Lọc mã phụ tùng" />
+            </nz-col>
+            <nz-col [nzSpan]="8">
+              <input nz-input [(ngModel)]="dataSearch.itemName" name="itemName" placeholder="Lọc tên phụ tùng" />
+            </nz-col>
+          </nz-row>
+          <nz-row class="mt-2" nzJustify="center">
+            <nz-col nzSpan="2">
+              <button nz-button nzType="primary" nzShape="round" (click)="searchData(true)">
+                <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+              </button>
+            </nz-col>
+          </nz-row>
+          <nz-row>
+
+            <nz-table nz-col nzSpan="24" class="mt-3" #table1 [nzData]="listOfData" [(nzPageSize)]="pageSize"
+              [nzShowPagination]="false" nzBordered [nzLoading]="loading">
+              <thead>
+                <tr>
+                  <th class="text-center" column-check [nzChecked]="checked" [nzIndeterminate]="indeterminate"
+                    (nzCheckedChange)="onAllChecked($event)"></th>
+                  <th class="text-center"> Mã đơn nhập</th>
+                  <th class="text-center"> Mã phụ tùng</th>
+                  <th class="text-center"> Tên phụ tùng</th>
+                  <th class="text-center"> Mã lô</th>
+                  <th class="text-center"> Số lượng trong lô</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of table1.data">
+                  <td class="column-check" [nzChecked]="setOfCheckedId.has(data)"
+                    (nzCheckedChange)="onItemChecked(data, $event)" class="text-nowrap"></td>
+                  <td class="text-nowrap">{{data.ibCode}}</td>
+                  <td class="text-nowrap">{{data.itemCode}}</td>
+                  <td class="text-nowrap">{{data.itemName}}</td>
+                  <td class="text-nowrap">
+                    {{data.ibDetailCode}}</td>
+                  <td class="text-nowrap">
+                    {{data.quantity}}</td>
+              </tbody>
+            </nz-table>
+            <nz-row nzGutter="8" nzFlex>
+              <nz-pagination class="mt-3 ml-3 mb-3" [nzTotal]="total" [(nzPageIndex)]="pageIndex"
+                [(nzPageSize)]="pageSize" (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)"
+                [nzShowTotal]="rangeTemplate1" nzShowSizeChanger>
+              </nz-pagination>
+              <ng-template #rangeTemplate1 let-range="range" let-total>
+                Dòng {{ range[0] }} tới {{ range[1] }} trong tổng số {{ total }} dòng
+              </ng-template>
+            </nz-row>
+          </nz-row>
+
+          <div nz-row>
+            <div nz-col [nzSpan]="24" class="text-center">
+              <button nz-button [disabled]="setOfCheckedId.size < 1" nzShape="round" nzType="primary"
+                (click)="onAddItem()">
+                <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm phụ tùng vào danh sách
+              </button>
+            </div>
+          </div>
+
+          <nz-table nz-col nzSpan="24" class="mt-2" [nzData]="dataObject?.lstItem" [nzShowPagination]="false"
+            [nzFrontPagination]="false" nzTemplateMode>
+            <thead>
+              <tr>
+                <th class="text-center"> STT</th>
+                <th class="text-center"> Mã đơn nhập</th>
+                <th class="text-center"> Mã phụ tùng</th>
+                <th class="text-center"> Tên phụ tùng</th>
+                <th class="text-center"> Mã lô</th>
+                <th class="text-center"> Số lượng trong lô</th>
+                <th class="text-center"> Số lượng thực tế</th>
+                <th class="text-center"> Chênh lệch</th>
+                <th class="text-center"> Tùy chọn</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataObject.lstItem; let i = index ">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-center">{{item.ibCode}}</td>
+                <td class="text-center">{{item.itemCode}}</td>
+                <td class="text-center">{{item.itemName}}</td>
+                <td class="text-center">{{item.ibDetailCode}}</td>
+                <td class="text-center">{{item.quantity | number: '1.0-2'}}</td>
+                <td class="text-center">
+                  <input class="text-left" nz-input placeholder="Nhập số lượng" [(ngModel)]="item.realQuantity"
+                    [name]="item.realQuantity + item.ibCode + item.ibDetailCod + item.itemCode" currencyMask />
+                </td>
+                <td class="text-center">
+                  {{ (((+item.quantity > 0 ? +item.quantity : 0) - (+item?.realQuantity ? +item?.realQuantity : 0)))}}
+                </td>
+                <td>
+                  <button nz-button nzType="primary" nzDanger nzShape="circle" nz-tooltip nzTooltipTitle="Xóa"
+                    nz-popconfirm nzPopconfirmTitle="Bạn có chắc muốn [XÓA]?" (nzOnConfirm)="onDelete(i)" class="mr-2">
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </ng-container>
+  </form>
+
+  <div nz-row>
+    <div nz-col [nzSpan]="24" class="text-center mt-2">
+      <button nzShape="round" nz-button [disabled]="!(frmAdd.form.valid && dataObject?.lstItem?.length > 0)"
+        nzType="primary" class="mr-3" (click)="onSave()">Lưu</button>
+    </div>
+  </div>
+</form>

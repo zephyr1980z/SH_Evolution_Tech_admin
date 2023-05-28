@@ -1,0 +1,118 @@
+<div id="print-section">
+  <ng-container *ngFor="let item of dataObject.lstItem">
+
+    <div nz-row [nzGutter]="24" style="display: flex;">
+      <div nz-col [nzSpan]="12">
+        <h2 style="margin: 10px 0 0 0; text-align: center;">
+          CÔNG TY TNHH TM DV VẬN TẢI QUỐC THỊNH
+        </h2>
+        <h3 style="margin: 0; text-align: center;">
+          ĐC:213/25 Đường D2, Phường 25, Quận Bình Thạnh, Thành phố
+          Hồ Chí Minh, Việt Nam
+        </h3>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <h2 style="margin: 10px 0 0 0; text-align: center;">
+          Mẫu số: 01 - VT
+        </h2>
+        <h3 style="margin: 0; text-align: center;">
+          <i>(Ban hành theo Thông tư số 200/2014/TT-BTC Ngày 22/12/2014 của Bộ Tài chính)</i>
+        </h3>
+      </div>
+    </div>
+
+    <div nz-row style="margin-top: 15px">
+      <div nz-col [nzSpan]="24" style="text-align:center;">
+        <b style="margin:0">PHIẾU NHẬP KHO</b>
+        <p style="margin:0">Ngày...............Tháng...............Năm</p>
+        <p style="margin:0">Số:</p>
+      </div>
+    </div>
+
+
+    <div nz-row style="display: flex; justify-content: space-between;" class="mt-3">
+      <div nz-col class="gutter-row" [nzSpan]="12">
+        <p>Họ tên người giao:
+          <b>{{ dataObject.supplierName }}</b>
+        </p>
+        <p>Theo hóa đơn số.................ngày.................tháng.................năm</p>
+        <p>Nhập tại kho: <b> Kho Quốc Thịnh </b></p>
+        <p>Địa
+          điểm:..............................................................................................................................
+        </p>
+      </div>
+    </div>
+
+    <nz-row style="display: flex; justify-content: space-between; width: 100%;" class="mt-3" nzJustify="center">
+      <nz-table [nzData]="['']" [nzLoading]="false" [nzShowPagination]="false" #ajaxTable>
+        <thead>
+          <tr>
+            <th [rowSpan]="4">STT</th>
+            <th [rowSpan]="4">Tên, nhãn hiệu, quy cách, phẩm chất vật tư, dụng cụ sản phẩm, hàng hóa</th>
+            <th [rowSpan]="4">Mã số</th>
+            <th [rowSpan]="4">Đơn vị tính</th>
+            <th [colSpan]="2">Số lượng</th>
+            <th [rowSpan]="4">Đơn giá</th>
+            <th [rowSpan]="4">Thành tiền</th>
+          </tr>
+          <tr>
+            <th>Yêu cầu</th>
+            <th>Thực nhập</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of ajaxTable.data; let i = index">
+            <td class="text-center"> {{ i + 1 }} </td>
+            <td class="mw-25 text-center">{{item.itemName}}</td>
+            <td nzWidth="200px" nzLeft class="text-center" class="text-center">{{item.itemCode}}</td>
+            <td class="mw-25 text-center">{{item.baseUnitName}}</td>
+            <td class="mw-25 text-center">{{item.estimatedQuantity | number: '1.0-2'}}</td>
+            <td class="mw-25 text-center">{{item.quantity | number: '1.0-2'}}</td>
+            <td class="mw-25 text-center">{{item.importprice | number: '1.0-2'}}</td>
+            <td class="mw-25 text-center">{{item.importprice * item.quantity| number: '1.0-2'}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-row>
+
+    <div nz-row style="display: flex; justify-content: space-between;" class="mt-3">
+      <div nz-col class="gutter-row" [nzSpan]="12">
+        <p>Tổng số tiền ( Viết bằng chữ ):
+        </p>
+        <p>Số chừng từ gốc kèm theo:
+          ..................................................................................................
+        </p>
+      </div>
+    </div>
+
+    <nz-row [nzGutter]="12" style="display: flex; justify-content: space-around;" class="mt-3">
+      <div class="text-center">
+        <p style="font-size: 14px; text-align: center;"><b>NGƯỜI LẬP PHIẾU</b></p>
+        <p style="text-align: center;"><i>(Ký & Ghi họ tên)</i></p>
+      </div>
+      <div class="text-center">
+        <p style="font-size: 14px; text-align: center;"><b>NGƯỜI NHẬN HÀNG</b></p>
+        <p style="text-align: center;"><i>(Ký & Ghi họ tên)</i></p>
+      </div>
+      <div class="text-center">
+        <p style="font-size: 14px; text-align: center;"><b>THỦ KHO</b></p>
+        <p style="text-align: center;"><i>(Ký, Ghi họ tên & Đóng dấu)</i></p>
+      </div>
+      <div class="text-center">
+        <p style="font-size: 14px; text-align: center;"><b>KẾ TOÁN TRƯỞNG</b></p>
+        <p style="text-align: center;"><i><b>(Hoặc bộ phận có nhu cầu nhập)</b></i></p>
+        <p style="text-align: center;"><i>(Ký, Ghi họ tên & Đóng dấu)</i></p>
+      </div>
+      <!-- <div class="text-center">
+        <p style="font-size: 14px; text-align: center;"><b>GIÁM ĐỐC</b></p>
+        <p style="text-align: center;"><i>(Ký, Ghi họ tên & Đóng dấu)</i></p>
+      </div> -->
+    </nz-row>
+  </ng-container>
+</div>
+
+<div class="mt-5 text-center" *ngIf="dataObject">
+  <button nz-button nzType="primary" printSectionId="print-section" ngxPrint>
+    In phiếu
+  </button>
+</div>

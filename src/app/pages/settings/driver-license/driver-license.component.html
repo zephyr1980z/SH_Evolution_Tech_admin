@@ -1,0 +1,121 @@
+<nz-collapse nzBordered="false">
+  <nz-collapse-panel nzHeader="Tìm kiếm" [nzActive]="true">
+    <nz-row nzGutter="12">
+      <nz-col nzSpan="6">
+        <input nz-input placeholder="Tìm theo số bằng lái" [(ngModel)]="dataSearch.licenseNo" name="licenseNo" />
+      </nz-col>
+      <nz-col nzSpan="6">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.licenseTypeId" name="licenseTypeId"
+          nzPlaceHolder="Tìm theo loại bằng lái">
+          <nz-option *ngFor="let item of dataLicenseType" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-col>
+      <nz-col nzSpan="6">
+        <nz-date-picker [nzShowTime]="false" nzFormat="dd/MM/yyyy" [(ngModel)]="dataSearch.effectDate" name="effectDate"
+          nzPlaceHolder="Ngày hiệu lực"></nz-date-picker>
+      </nz-col>
+      <nz-col nzSpan="6">
+        <nz-date-picker [nzShowTime]="false" nzFormat="dd/MM/yyyy" [(ngModel)]="dataSearch.expireDate" name="expireDate"
+          nzPlaceHolder="Ngày hết hiệu lực"></nz-date-picker>
+      </nz-col>
+      <nz-col nzSpan="6" class="mt-3">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.driverId" name="driverId"
+          nzPlaceHolder="Tìm theo tài xế">
+          <nz-option *ngFor="let item of dataDriver" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+        </nz-select>
+      </nz-col>
+      <nz-col nzSpan="6" class="mt-3">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="dataSearch.statusId" name="statusId"
+          nzPlaceHolder="Chọn trạng thái">
+          <nz-option *ngFor="let item of dataFilterStatus" [nzLabel]="item.name" [nzValue]="item.value"></nz-option>
+        </nz-select>
+      </nz-col>
+
+      <nz-col nzSpan="24" class="text-center mt-3">
+        <button nz-button nzType="primary" (click)="searchData(true)" nzShape="round">
+          <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-row class="mb-3 mt-3">
+  <button class="mr-2" nz-button nzType="primary" nzShape="round" (click)="clickAdd()"
+    *ngIf="coreService.checkPermission(enumRole.Add.code)">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>Thêm mới
+  </button>
+  <button *ngIf="coreService.checkPermission(enumRole.Export_Excel.code)" class="mr-2" nzShape="round" nz-button
+    (click)="clickTemplateExcel()" nzType="default"><i nz-icon nzType="download" nzTheme="outline"></i>Tải Template
+    Excel</button>
+  <input class="hidden" type="file" id="file" (change)="clickImportExcel($event)" placeholder="Upload file"
+    accept=".csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+  <label *ngIf="coreService.checkPermission(enumRole.Import_Excel.code)" nz-button nzShape="round" for="file"
+    class="lable-custom-file">
+    <i nz-icon nzType="upload"></i> Nhập Excel
+  </label>
+  <button *ngIf="coreService.checkPermission(enumRole.Export_Excel.code)" nz-button nzType="primary" class="mr-3 ml-3"
+    (click)="onDownloadExcel()" nzShape="round">
+    <i nz-icon nzType="download" nzTheme="outline"></i> Tải Excel
+  </button>
+</nz-row>
+
+<nz-row class="mt-1">
+  <nz-col nzSpan="24">
+    <nz-table class="mb-3" #ajaxTable [nzData]="listOfData" [(nzPageSize)]="pageSize" [nzLoading]="loading"
+      [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th class="text-center">Số bằng lái</th>
+          <th class="text-center">Loại bằng lái</th>
+          <th class="text-center">Tài xế</th>
+          <th class="text-center">Ngày hiệu lực bằng lái</th>
+          <th class="text-center">Ngày hết hạn bằng lái</th>
+          <th class="text-center">Trạng thái</th>
+          <th class="text-center">Tùy chọn</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let data of ajaxTable.data">
+          <tr style="cursor: pointer">
+            <td>{{ data.licenseNo }}</td>
+            <td>{{ data.licenseTypeName }}</td>
+            <td>{{ data.driverName }}</td>
+            <td>{{ data.effectDate | date: 'dd-MM-yyyy' }}</td>
+            <td>{{ data.expireDate | date: 'dd-MM-yyyy' }}</td>
+            <td class="text-center">
+              <nz-tag class="tag-status3" [nzColor]="'red'" *ngIf="data.isDeleted">
+                Không hoạt động</nz-tag>
+              <nz-tag class="tag-status3" [nzColor]="'green'" *ngIf="!data.isDeleted">Đang hoạt động</nz-tag>
+            </td>
+            <td class="text-center">
+              <button *ngIf="data.isDeleted && coreService.checkPermission(enumRole.Update.code)" nz-popconfirm
+                nzPopconfirmTitle="Bạn có chắc muốn hoạt động lại?" nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="setActiveItem(data)" nz-tooltip nzTooltipTitle="Ngưng hoạt động" nz-button
+                nzShape="circle" nzDanger class="mr-2 btn-dangerous">
+                <i nz-icon nzType="stop" nzTheme="outline"></i>
+              </button>
+              <button *ngIf="!data.isDeleted && coreService.checkPermission(enumRole.Update.code)" nz-popconfirm
+                nzPopconfirmTitle="Bạn có chắc muốn ngưng hoạt động?" nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="setActiveItem(data)" nz-tooltip nzTooltipTitle="Đang hoạt động" nz-button
+                nzShape="circle" class="mr-2 btn-primary">
+                <i nz-icon nzType="play-circle"></i>
+              </button>
+              <button *ngIf="coreService.checkPermission(enumRole.Update.code)" (click)="clickEdit(data)" nz-button
+                nzShape="circle" nzTooltipTitle="Cập nhật" nz-tooltip class="btn-primary">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+    <nz-pagination [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)" [nzShowTotal]="rangeTemplate"
+      nzShowSizeChanger>
+    </nz-pagination>
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{ range[0] }}-{{ range[1] }} of {{ total }} items
+    </ng-template>
+  </nz-col>
+</nz-row>
